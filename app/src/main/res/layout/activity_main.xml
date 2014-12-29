@@ -26,4 +26,14 @@
         android:layout_above="@+id/Login"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="38dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_alignLeft="@+id/Login"
+        android:layout_alignStart="@+id/Login"
+        android:layout_alignRight="@+id/Login"
+        android:layout_alignEnd="@+id/Login" />
 </RelativeLayout>
