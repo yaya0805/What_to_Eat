@@ -1,19 +1,21 @@
 package domain;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by user on 2014/12/28.
  */
-public class Information {
-    public Map<Long,Restaurant> map;
+public class Information implements Serializable{
+    public List<Restaurant> resList;
     public User user;
-    public Information(Map<Long,Restaurant> map,User user){
-        this.map = map;
+    public Information(List<Restaurant> map,User user){
+        this.resList = map;
         this.user = user;
     }
-    public void setMap(Map<Long,Restaurant> map){this.map = map;}
+    public void setResList(List<Restaurant> list){this.resList = list;}
     public void setUser(User user){this.user = user;}
-    public Map<Long,Restaurant> getMap(){ return map; }
+    public List<Restaurant> getResList(){ return resList; }
     public User getUser(){return user;}
 }

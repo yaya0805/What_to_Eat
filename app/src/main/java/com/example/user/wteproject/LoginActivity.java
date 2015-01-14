@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,7 +60,7 @@ public class LoginActivity extends ActionBarActivity {
                     /*int num = info.user.hasRate;
                     String str;
                     str = Integer.toString(num);*/
-                    t.setText(Boolean.toString(res));
+                    t.setText(Boolean.toString(res) + " " + info.resList.size());
                 } catch (IOException | URISyntaxException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -96,8 +97,12 @@ public class LoginActivity extends ActionBarActivity {
         String jsonString = gson.toJson(user);
         String result = delegate.doPost(BASE_URL+"/login" , jsonString);
         if(result!=null){
+            Log.d("info",result);
             info = gson.fromJson(result,Information.class);
             Intent intent = new Intent(this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("info",info);
+            intent.putExtras(bundle);
             startActivity(intent);
             return true;
         }

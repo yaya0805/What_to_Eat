@@ -1,17 +1,25 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by user on 2014/12/28.
  */
-public class User {
+public class User implements Serializable{
     private String id;
-    private Map<String,Double> userRate = new HashMap<String,Double>();
+    private Map<String,Double> userRate ;
     public int hasRate = 0;
+
     public void user(){}
 
+    public void setUserRate(Map<String,Double> map){
+        this.userRate = map;
+    }
+    public Map<String ,Double> getUserRate(){
+        return userRate;
+    }
     public void setId(String id){
         this.id = id;
     }
@@ -29,3 +37,4 @@ public class User {
         return hasRate;
     }
 }
+

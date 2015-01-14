@@ -1,9 +1,11 @@
 package domain;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 2014/12/28.
  */
-public class Restaurant {
+public class Restaurant implements Serializable{
     private String name;
     private double rate;
     private long commentPeople = 0;
