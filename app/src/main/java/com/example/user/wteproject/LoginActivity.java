@@ -33,7 +33,7 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
@@ -51,6 +51,10 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View v){
                 try {
+/* TODO
+    Login input
+ */
+
                     boolean res = userLogin("root");
                     /*int num = info.user.hasRate;
                     String str;
