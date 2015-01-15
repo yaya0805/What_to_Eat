@@ -1,55 +1,60 @@
 package com.example.user.wteproject;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import domain.Information;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity  {
 
-    private Button addNewResBtn;
-    private Information info ;
-    private ListAdapter listAdapter ;
-    private ListView listView;
+    FragmentPagerAdapter adapterViewPager;
+    private Information info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addNewResBtn = (Button) findViewById(R.id.addNewResBtn);
-        info = (Information) getIntent().getSerializableExtra("info");
-        listView = (ListView) findViewById(R.id.resListView);
+        info = (Information) getIntent().getExtras().getSerializable("info");
 
-        List nameList = new ArrayList<String>();
-        List adrList = new ArrayList<String>();
-        for (int i=0;i<info.resList.size();i++){
-            // test
-            Toast.makeText(MainActivity.this,info.resList.get(i).getName(),Toast.LENGTH_LONG).show();
-            nameList.add(info.resList.get(i).getName());
-            adrList.add(info.resList.get(i).getAddress());
-        }
-        listAdapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,nameList);
-        listView.setAdapter(listAdapter);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),info);
+        vpPager.setAdapter(adapterViewPager);
 
-        addNewResBtn.setOnClickListener(new Button.OnClickListener() {
+        vpPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            // This method will be invoked when a new page becomes selected.
             @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,info.user.getId(),Toast.LENGTH_LONG).show();
+            public void onPageSelected(int position) {
+
             }
+
+            // This method will be invoked when the current page is scrolled
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Code goes here
+            }
+
+            // Called when the scroll state changes:
+            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Code goes here
+            }
+            public void onFragmentInteraction(Uri uri){
+            }
+
         });
+
     }
 
 
@@ -71,7 +76,59 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id == R.id.action_add){
+            Intent intent = new Intent(this,newResActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("info",info);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 2;
+        private Information info;
+
+        public MyPagerAdapter(FragmentManager fragmentManager , Information info) {
+            super(fragmentManager);
+            this.info = info;
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position){
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return ResListFragment.newInstance("List", 0 ,info);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return DecisionFragment.newInstance("Decision", 1);
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return "Restaurant List";
+                case 1:
+                    return "Decision";
+                default:
+                    return null;
+            }
+        }
+
+    }
+
 }

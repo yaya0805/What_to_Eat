@@ -61,6 +61,7 @@ public class LoginActivity extends ActionBarActivity {
                     String str;
                     str = Integer.toString(num);*/
                     t.setText(Boolean.toString(res) + " " + info.resList.size());
+                    //LoginActivity.this.finish();
                 } catch (IOException | URISyntaxException | JSONException e) {
                     e.printStackTrace();
                 }
