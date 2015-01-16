@@ -11,17 +11,23 @@ public class Restaurant implements Serializable{
     private long commentPeople = 0;
     private long id ;
     private String address;
+    private String phone;
+    private boolean type_dinner;
+    private boolean type_lunch;
+    private boolean type_breakfast;
+    private boolean type_night_snack;
 
     //empty constructor
     public Restaurant(){}
 
     //init constructor
-    public Restaurant(String name,double rate,long id,String address){
+    public Restaurant(String name,long id,String address,String phone){
         this.name = name ;
-        this.rate = rate ;
+        this.rate = 0 ;
         this.id = -1;
         this.commentPeople = 0;
         this.address = address;
+        this.phone = phone;
     }
 
     public void setId(long id){
@@ -63,6 +69,27 @@ public class Restaurant implements Serializable{
     public String getAddress(){
         return address;
     }
+
+    public void setPhone(String phone){this.phone = phone;}
+
+    public void setType_dinner(boolean r) { type_dinner = r; }
+
+    public boolean getType_dinner() { return type_dinner; }
+
+    public void setType_lunch(boolean r){ type_lunch = r; }
+
+    public boolean getType_lucnch(){ return type_lunch;}
+
+    public void setType_breakfast(boolean r){ type_breakfast =r; }
+
+    public boolean getType_breakfast(){ return type_breakfast; }
+
+    public void setType_night_snack(boolean r){ type_night_snack = r; }
+
+    public boolean getType_night_snack(){ return type_night_snack; }
+
+    public String getPhone(){ return phone; }
+
     public void updatingRating(double newRate){
         double total = rate*commentPeople;
         commentPeople += 1;

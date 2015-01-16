@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Name of the new Res."
-        android:id="@+id/newResNameText"
+        android:id="@+id/NameText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -20,24 +20,73 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/newResAdrText"
+        android:id="@+id/AdrText"
         android:hint="Address of the new Res."
-        android:layout_below="@+id/newResNameText"
+        android:layout_below="@+id/NameText"
         android:layout_marginTop="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/newResNameText"
-        android:layout_alignEnd="@+id/newResNameText" />
+        android:layout_alignRight="@+id/NameText"
+        android:layout_alignEnd="@+id/NameText" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="加餐廳啦"
         android:id="@+id/addNewResBtn"
-        android:layout_below="@+id/newResAdrText"
-        android:layout_marginTop="58dp"
-        android:layout_alignRight="@+id/newResAdrText"
-        android:layout_alignEnd="@+id/newResAdrText"
+        android:layout_below="@+id/checkBox4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:layout_alignRight="@+id/AdrText"
+        android:layout_alignEnd="@+id/AdrText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:id="@+id/phoneText"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/AdrText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New CheckBox"
+        android:id="@+id/checkBox"
+        android:layout_below="@+id/phoneText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="29dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New CheckBox"
+        android:id="@+id/checkBox2"
+        android:layout_below="@+id/checkBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New CheckBox"
+        android:id="@+id/checkBox3"
+        android:layout_below="@+id/checkBox2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New CheckBox"
+        android:id="@+id/checkBox4"
+        android:layout_below="@+id/checkBox3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
