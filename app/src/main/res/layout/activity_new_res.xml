@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="加餐廳啦"
         android:id="@+id/addNewResBtn"
-        android:layout_below="@+id/checkBox4"
+        android:layout_below="@+id/night_snackcheck"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="35dp"
@@ -56,38 +56,42 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox"
+        android:text="早餐"
+        android:id="@+id/breakfastcheck"
         android:layout_below="@+id/phoneText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="29dp" />
+        android:layout_marginTop="29dp"
+        android:checked="false" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox2"
-        android:layout_below="@+id/checkBox"
+        android:text="中餐"
+        android:id="@+id/lunchcheck"
+        android:layout_below="@+id/breakfastcheck"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:checked="false" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox3"
-        android:layout_below="@+id/checkBox2"
+        android:text="晚餐"
+        android:id="@+id/dinnercheck"
+        android:layout_below="@+id/lunchcheck"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:checked="false" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox4"
-        android:layout_below="@+id/checkBox3"
+        android:text="消夜"
+        android:id="@+id/night_snackcheck"
+        android:layout_below="@+id/dinnercheck"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:checked="false" />
 
 </RelativeLayout>
