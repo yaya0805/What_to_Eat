@@ -1,12 +1,27 @@
 package com.example.user.wteproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -26,6 +41,20 @@ public class DecisionFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String title;
     private int page;
+
+    private Spinner waySpinner;
+    private Spinner timeSpinner;
+
+    private ArrayAdapter wayAdapter;
+    private ArrayAdapter timeAdapter;
+
+    private Button decideBtn ;
+
+    private TextView longView ;
+    private TextView latView;
+
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,14 +86,84 @@ public class DecisionFragment extends Fragment {
         if (getArguments() != null) {
             page = getArguments().getInt(ARG_PAGE);
             title = getArguments().getString(ARG_TITLE);
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_decision, container, false);
+
+        boolean isGps = true;
+
+        String[] ways = {"步行" ,"機車" ,"汽車"};
+        String[] times = {"10分內","20分內","30分內","40分內"};
+        waySpinner = (Spinner) view.findViewById(R.id.waySpinner);
+        timeSpinner = (Spinner) view.findViewById(R.id.arriveTimeSpinner);
+        wayAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,ways);
+        waySpinner.setAdapter(wayAdapter);
+        timeAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,times);
+        timeSpinner.setAdapter(timeAdapter);
+
+        longView = (TextView) view.findViewById(R.id.longView);
+        latView = (TextView) view.findViewById(R.id.latView);
+
+        decideBtn = (Button) view.findViewById(R.id.decideBtn);
+        decideBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Log.d("Button","has been pressed");
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    new AlertDialog.Builder(getActivity()).setTitle("抵達時間功能").setMessage("此功能需要GPS,您尚未開啟GPS,要前往設定畫面嗎?")
+                            .setCancelable(false).setPositiveButton("Y",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    }).setNegativeButton("N",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getActivity(),"抵達時間功能將無法使用",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+                }
+                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    locationListener = new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            Double longitude = location.getLongitude() * 1000000;
+                            Double latitude = location.getLatitude() * 1000000;
+                            Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
+                            longView.setText("經度"+longitude);
+                            latView.setText("緯度"+latitude);
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    };
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                }
+            }
+        });
+
+        // check if gps has been launched.
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_decision, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

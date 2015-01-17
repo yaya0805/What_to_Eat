@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.lang.*;
@@ -31,6 +32,9 @@ public class LoginActivity extends ActionBarActivity {
     public final HttpDelegate delegate = new HttpDelegate();
     public final String BASE_URL = "http://trim-mix-807.appspot.com";
     public Information info ;
+
+    private ProgressBar progressBar ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +49,25 @@ public class LoginActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // login btn
         Button btn;
         btn = (Button) findViewById(R.id.Login);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         t = (TextView) findViewById(R.id.textView);
         btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v){
                 try {
-/* TODO
+/* TODO:
     Login input
- */
 
+
+
+
+ */
+                    progressBar.setVisibility(View.VISIBLE);
                     boolean res = userLogin("root");
                     /*int num = info.user.hasRate;
                     String str;
@@ -105,8 +117,10 @@ public class LoginActivity extends ActionBarActivity {
             bundle.putSerializable("info",info);
             intent.putExtras(bundle);
             startActivity(intent);
+            progressBar.setVisibility(View.INVISIBLE);
             return true;
         }
+        progressBar.setVisibility(View.INVISIBLE);
         return false;
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -36,6 +37,7 @@ public class newResActivity extends ActionBarActivity {
     private CheckBox lunchCheck;
     private CheckBox dinnerCheck;
     private CheckBox night_snackCheck;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class newResActivity extends ActionBarActivity {
         lunchCheck = (CheckBox) findViewById(R.id.lunchcheck);
         dinnerCheck = (CheckBox) findViewById(R.id.dinnercheck);
         night_snackCheck = (CheckBox) findViewById(R.id.night_snackcheck);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
 
         addNewResBtn.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -65,6 +68,7 @@ public class newResActivity extends ActionBarActivity {
                 res.setType_dinner(dinnerCheck.isChecked());
                 res.setType_lunch(lunchCheck.isChecked());
                 res.setType_night_snack(night_snackCheck.isChecked());
+                progressBar.setVisibility(View.VISIBLE);
                 postRes(res);
             }
         });
