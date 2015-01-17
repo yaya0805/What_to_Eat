@@ -21,8 +21,9 @@
         android:layout_width="300px"
         android:layout_height="150px"
         android:id="@+id/Login"
-        android:layout_marginBottom="80dp"
-        android:background="@drawable/button_enter"
+        android:background="@drawable/button_login"
+        android:clickable="false"
+        android:layout_marginBottom="101dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
