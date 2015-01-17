@@ -6,16 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import adapter.MyListAdapter;
 import domain.Information;
 
 
@@ -81,9 +86,9 @@ public class ResListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+        ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
         for (int i=0;i<info.getResList().size();i++){
-            HashMap<String ,String> item = new HashMap<String ,String >();
+            HashMap<String ,Object> item = new HashMap<String ,Object >();
             item.put("name", info.getResList().get(i).getName());
             item.put("address", info.getResList().get(i).getAddress());
             Log.d("name", info.getResList().get(i).getName());
@@ -91,11 +96,20 @@ public class ResListFragment extends Fragment {
             list.add(item);
         }
         String[] selcet = {"name", "address"};
-        int[] ids = {R.id.text1,R.id.text2};
+        int[] ids = {R.id.text1,R.id.text2,R.id.ratingBar};
         listView = (ListView) view.findViewById(R.id.resListView);
-        listAdapter = new SimpleAdapter(getActivity(),list,R.layout.list_rest
+        listAdapter = new MyListAdapter(getActivity(),list,R.layout.list_rest
                 ,selcet,ids);
         listView.setAdapter(listAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast t = Toast.makeText(getActivity(), String.valueOf(position) + " is long clicked",
+                        Toast.LENGTH_LONG);
+                t.show();
+                return true;
+            }
+        });
         return view;
     }
 

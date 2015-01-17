@@ -61,6 +61,10 @@ public class newResActivity extends ActionBarActivity {
                 String phone = phoneText.getText().toString();
                 // name ,id ,address ,phone
                 Restaurant res = new Restaurant(name,-1,address,phone);
+                res.setType_breakfast(breakfastcheck.isChecked());
+                res.setType_dinner(dinnerCheck.isChecked());
+                res.setType_lunch(lunchCheck.isChecked());
+                res.setType_night_snack(night_snackCheck.isChecked());
                 postRes(res);
             }
         });
