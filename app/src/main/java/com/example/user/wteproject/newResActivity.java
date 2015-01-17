@@ -1,26 +1,32 @@
 package com.example.user.wteproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import domain.Information;
 import domain.Restaurant;
 import http.HttpDelegate;
 
 
 public class newResActivity extends ActionBarActivity {
     public final String BASE_URL = "http://trim-mix-807.appspot.com";
+
+    private Information info;
 
     private Button addNewResBtn;
     private EditText adrText;
@@ -35,6 +41,8 @@ public class newResActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_res);
+
+        info = (Information) getIntent().getExtras().getSerializable("info");
 
         addNewResBtn = (Button) findViewById(R.id.addNewResBtn);
         adrText = (EditText) findViewById(R.id.adrText);
@@ -88,18 +96,29 @@ public class newResActivity extends ActionBarActivity {
                 HttpDelegate delegate = new HttpDelegate();
                 Gson gson = new Gson();
                 String jsonString = gson.toJson(res);
+                Log.d("msg",jsonString);
                 try {
                     String result = delegate.doPost(BASE_URL+"/restaurants" , jsonString);
                     Restaurant newRes = gson.fromJson(result,Restaurant.class);
+                    Log.d("result",result);
                     return newRes;
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                return null;
+            }
+            protected void onPostExecute(Restaurant result){
+                info.saveRes(result);
+                Intent intent = new Intent(newResActivity.this,MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("info",info);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                newResActivity.this.finish();
 
             }
-
-        };
+        }.execute(null,null,null);
     }
 }

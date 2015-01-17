@@ -2,6 +2,7 @@ package com.example.user.wteproject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,16 +82,18 @@ public class ResListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-        for (int i=0;i<info.resList.size();i++){
+        for (int i=0;i<info.getResList().size();i++){
             HashMap<String ,String> item = new HashMap<String ,String >();
-            item.put("name", info.resList.get(i).getName());
-            item.put("address", info.resList.get(i).getAddress());
+            item.put("name", info.getResList().get(i).getName());
+            item.put("address", info.getResList().get(i).getAddress());
+            Log.d("name", info.getResList().get(i).getName());
+            Log.d("address",info.getResList().get(i).getAddress());
             list.add(item);
         }
         String[] selcet = {"name", "address"};
-        int[] ids = {android.R.id.text1,android.R.id.text2};
+        int[] ids = {R.id.text1,R.id.text2};
         listView = (ListView) view.findViewById(R.id.resListView);
-        listAdapter = new SimpleAdapter(getActivity(),list,android.R.layout.simple_list_item_2
+        listAdapter = new SimpleAdapter(getActivity(),list,R.layout.list_rest
                 ,selcet,ids);
         listView.setAdapter(listAdapter);
         return view;

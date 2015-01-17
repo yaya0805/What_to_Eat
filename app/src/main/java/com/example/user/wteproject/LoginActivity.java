@@ -60,7 +60,7 @@ public class LoginActivity extends ActionBarActivity {
                     /*int num = info.user.hasRate;
                     String str;
                     str = Integer.toString(num);*/
-                    t.setText(Boolean.toString(res) + " " + info.resList.size());
+                    t.setText(Boolean.toString(res) + " " + info.getResList().size());
                     //LoginActivity.this.finish();
                 } catch (IOException | URISyntaxException | JSONException e) {
                     e.printStackTrace();

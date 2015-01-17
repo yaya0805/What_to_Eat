@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by user on 2014/12/28.
  */
 public class Information implements Serializable{
-    public List<Restaurant> resList;
+    private List<Restaurant> resList;
     public User user;
     public Information(List<Restaurant> map,User user){
         this.resList = map;
@@ -18,4 +18,8 @@ public class Information implements Serializable{
     public void setUser(User user){this.user = user;}
     public List<Restaurant> getResList(){ return resList; }
     public User getUser(){return user;}
+    public void saveRes(Restaurant res){
+        res.setId(resList.size());
+        resList.add(res);
+    }
 }
