@@ -6,6 +6,10 @@ import java.io.Serializable;
  * Created by user on 2014/12/28.
  */
 public class Restaurant implements Serializable{
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private String name;
     private double rate;
     private long commentPeople = 0;
@@ -16,6 +20,8 @@ public class Restaurant implements Serializable{
     private boolean type_lunch;
     private boolean type_breakfast;
     private boolean type_night_snack;
+    private Double lng;
+    private Double lat;
 
     //empty constructor
     public Restaurant(){}
@@ -89,6 +95,14 @@ public class Restaurant implements Serializable{
     public boolean getType_night_snack(){ return type_night_snack; }
 
     public String getPhone(){ return phone; }
+
+    public void setLat(Double lat){ this.lat = lat; }
+
+    public void setLng(Double lng){ this.lng = lng; }
+
+    public Double getLat(){  return lat; }
+
+    public Double getLng(){ return lng; }
 
     public void updatingRating(double newRate){
         double total = rate*commentPeople;

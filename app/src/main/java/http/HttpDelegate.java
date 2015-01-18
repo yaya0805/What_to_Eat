@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -49,6 +50,23 @@ public class HttpDelegate {
         else return null;
 
 
+    }
+
+    public String doGet(String url) throws IOException {
+        HttpGet req = new HttpGet(url);
+        req.setHeader("Content-Type","application/json;charset=UTF-8");
+
+        HttpResponse resp = client.execute(req);
+        System.out.println("GET "+Integer.toString(resp.getStatusLine().getStatusCode()));
+        int code = resp.getStatusLine().getStatusCode();
+        if(code==200 || code==201) {
+            HttpEntity entity = resp.getEntity();
+            String charSet = ContentType.getOrDefault(entity).getCharset().name();
+            bodyContent = StringEscapeUtils.unescapeJava(EntityUtils.toString(entity, charSet));
+            Log.d("charset_resp",charSet);
+            return bodyContent;
+        }
+        return null;
     }
 
 

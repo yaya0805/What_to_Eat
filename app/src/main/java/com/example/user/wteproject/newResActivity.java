@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import domain.GeoResult;
 import domain.Information;
 import domain.Restaurant;
 import http.HttpDelegate;
@@ -62,14 +63,27 @@ public class newResActivity extends ActionBarActivity {
                 String name = nameText.getText().toString();
                 String address = adrText.getText().toString();
                 String phone = phoneText.getText().toString();
+                final String url = "http://maps.googleapis.com/maps/api/geocode/json?address="+address+"&sensor=false&language=zh-TW";
+
                 // name ,id ,address ,phone
                 Restaurant res = new Restaurant(name,-1,address,phone);
+
                 res.setType_breakfast(breakfastcheck.isChecked());
                 res.setType_dinner(dinnerCheck.isChecked());
                 res.setType_lunch(lunchCheck.isChecked());
                 res.setType_night_snack(night_snackCheck.isChecked());
-                progressBar.setVisibility(View.VISIBLE);
-                postRes(res);
+
+                if(info.isResExisting(res.getName())==false && !address.contains("#")
+                        && !address.contains("%")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    postRes(url, res);
+                }
+                else if(address.contains("#") || address.contains("%")){
+                    Toast.makeText(newResActivity.this, "不合法地址,請重新確認", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(newResActivity.this, "該餐廳已經存在或是請加入分店名", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -97,35 +111,45 @@ public class newResActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void postRes(final Restaurant res){
+    private void postRes(final String url,final Restaurant res){
         new AsyncTask<Void,Void,Restaurant>() {
             @Override
             protected Restaurant doInBackground(Void... params) {
                 HttpDelegate delegate = new HttpDelegate();
                 Gson gson = new Gson();
-                String jsonString = gson.toJson(res);
-                Log.d("msg",jsonString);
                 try {
-                    String result = delegate.doPost(BASE_URL+"/restaurants" , jsonString);
-                    Restaurant newRes = gson.fromJson(result,Restaurant.class);
-                    Log.d("result",result);
-                    return newRes;
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                    String geoString = delegate.doGet(url);
+                    GeoResult geoResult = gson.fromJson(geoString,GeoResult.class);
+                    if(geoResult.getStatus().compareTo("OK")==0) {
+                        res.setAddress(geoResult.getResults().get(0).getFormatted_address());
+                        res.setLat(geoResult.getResults().get(0).getGeometry().getLocation().getLat());
+                        res.setLng(geoResult.getResults().get(0).getGeometry().getLocation().getLng());
+                        String jsonString = gson.toJson(res);
+                        Log.d("msg",jsonString);
+                        String result = delegate.doPost(BASE_URL+"/restaurants" , jsonString);
+                        Restaurant newRes = gson.fromJson(result,Restaurant.class);
+                        Log.d("result",result);
+                        return newRes;
+                    }
+                } catch (URISyntaxException | IOException e) {
                     e.printStackTrace();
                 }
                 return null;
             }
             protected void onPostExecute(Restaurant result){
-                info.saveRes(result);
-                Intent intent = new Intent(newResActivity.this,MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("info",info);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                newResActivity.this.finish();
-
+                if(result!=null) {
+                    info.saveRes(result);
+                    Intent intent = new Intent(newResActivity.this, MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("info", info);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    newResActivity.this.finish();
+                }
+                else{
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(newResActivity.this,"找不到該地址,請換一種形式輸入",Toast.LENGTH_SHORT).show();
+                }
             }
         }.execute(null,null,null);
     }

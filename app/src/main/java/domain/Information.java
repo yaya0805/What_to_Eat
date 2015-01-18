@@ -22,4 +22,11 @@ public class Information implements Serializable{
         res.setId(resList.size());
         resList.add(res);
     }
+
+    public boolean isResExisting(String name){
+        for(int i=0;i<resList.size();i++){
+            if(resList.get(i).getName().compareTo(name)==0) return true;
+        }
+        return false;
+    }
 }

@@ -166,6 +166,7 @@ public class DecisionFragment extends Fragment {
         // check if gps has been launched.
 
 
+
         // Inflate the layout for this fragment
         return view;
     }
