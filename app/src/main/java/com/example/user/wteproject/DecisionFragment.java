@@ -95,16 +95,18 @@ public class DecisionFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_decision, container, false);
 
-        boolean isGps = true;
 
         String[] ways = {"步行" ,"機車" ,"汽車"};
         String[] times = {"10分內","20分內","30分內","40分內"};
+        final decisionModel model = new decisionModel();
+
         waySpinner = (Spinner) view.findViewById(R.id.waySpinner);
         timeSpinner = (Spinner) view.findViewById(R.id.arriveTimeSpinner);
         wayAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,ways);
         waySpinner.setAdapter(wayAdapter);
         timeAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,times);
         timeSpinner.setAdapter(timeAdapter);
+
 
         longView = (TextView) view.findViewById(R.id.longView);
         latView = (TextView) view.findViewById(R.id.latView);
@@ -135,8 +137,10 @@ public class DecisionFragment extends Fragment {
                             Double longitude = location.getLongitude() * 1000000;
                             Double latitude = location.getLatitude() * 1000000;
                             Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
-                            longView.setText("經度"+longitude);
-                            latView.setText("緯度"+latitude);
+                            model.setLatitude(latitude);
+                            model.setLongitude(longitude);
+                            longView.setText("經度" + longitude);
+                            latView.setText("緯度" + latitude);
                         }
 
                         @Override
@@ -203,6 +207,17 @@ public class DecisionFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private class decisionModel{
+        private Double longitude;
+        private Double latitude;
+        public void setLongitude(Double longitude){
+            this.longitude = longitude;
+        }
+        public void setLatitude(Double latitude){
+            this.latitude = latitude;
+        }
     }
 
 }

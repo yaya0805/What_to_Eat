@@ -1,7 +1,9 @@
 package com.example.user.wteproject;
 
+
 import android.content.Intent;
 import android.os.StrictMode;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,8 @@ public class LoginActivity extends ActionBarActivity {
     public final String BASE_URL = "http://trim-mix-807.appspot.com";
     public Information info ;
 
+    private ActionBar actionBar;
+
     private ProgressBar progressBar ;
 
     @Override
@@ -48,6 +52,10 @@ public class LoginActivity extends ActionBarActivity {
                 .build());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // hide action bar
+        actionBar = getSupportActionBar();
+        actionBar.hide();
 
         // login btn
         Button btn;
