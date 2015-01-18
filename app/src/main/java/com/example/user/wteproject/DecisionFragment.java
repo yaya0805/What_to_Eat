@@ -13,15 +13,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import android.view.ViewGroup.LayoutParams;
+
 
 
 /**
@@ -80,6 +78,7 @@ public class DecisionFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +87,7 @@ public class DecisionFragment extends Fragment {
             title = getArguments().getString(ARG_TITLE);
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
+
     }
 
     @Override

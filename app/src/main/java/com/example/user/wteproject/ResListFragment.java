@@ -5,11 +5,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,7 +84,7 @@ public class ResListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
@@ -104,13 +107,29 @@ public class ResListFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast t = Toast.makeText(getActivity(), String.valueOf(position) + " is long clicked",
-                        Toast.LENGTH_LONG);
-                t.show();
+                View popupView = inflater.inflate(R.layout.popup_window, null);
+                final PopupWindow popupWindow = new PopupWindow(
+                        popupView,
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT);
+
+                //Button btnDismiss = (Button)popupView.findViewById(R.id.);
+                //btnDismiss.setOnClickListener(new Button.OnClickListener(){
+/*
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        popupWindow.dismiss();
+                    }});
+*/
+                popupWindow.showAsDropDown(listView, 50, -30);
+
                 return true;
             }
+
         });
-        return view;
+
+            return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
