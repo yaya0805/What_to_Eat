@@ -1,5 +1,6 @@
 package com.example.user.wteproject;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -104,9 +105,9 @@ public class ResListFragment extends Fragment {
         listAdapter = new MyListAdapter(getActivity(),list,R.layout.list_rest
                 ,selcet,ids);
         listView.setAdapter(listAdapter);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
                 final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
 
@@ -120,9 +121,12 @@ public class ResListFragment extends Fragment {
                     }});
 */
                 //popupWindow.setWindowLayoutMode(1000,1000);
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(view,0,30,200);
 
-                return true;
+
+
             }
 
         });
