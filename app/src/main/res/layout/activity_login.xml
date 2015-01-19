@@ -18,12 +18,12 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="300px"
-        android:layout_height="150px"
+        android:layout_width="360px"
+        android:layout_height="180px"
         android:id="@+id/Login"
         android:background="@drawable/button_login"
         android:clickable="false"
-        android:layout_marginBottom="101dp"
+        android:layout_marginBottom="49dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -34,5 +34,13 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="800px"
+        android:layout_height="800px"
+        android:id="@+id/imageView"
+        android:background="@drawable/name"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -108,10 +108,7 @@ public class ResListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
-                final PopupWindow popupWindow = new PopupWindow(
-                        popupView,
-                        LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT);
+                final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
 
                 //Button btnDismiss = (Button)popupView.findViewById(R.id.);
                 //btnDismiss.setOnClickListener(new Button.OnClickListener(){
@@ -122,7 +119,8 @@ public class ResListFragment extends Fragment {
                         popupWindow.dismiss();
                     }});
 */
-                popupWindow.showAsDropDown(listView, 50, -30);
+                //popupWindow.setWindowLayoutMode(1000,1000);
+                popupWindow.showAtLocation(view,0,30,200);
 
                 return true;
             }
