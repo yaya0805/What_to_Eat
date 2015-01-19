@@ -38,6 +38,9 @@ public class newResActivity extends ActionBarActivity {
     private CheckBox lunchCheck;
     private CheckBox dinnerCheck;
     private CheckBox night_snackCheck;
+    private CheckBox riceCheck;
+    private CheckBox noodleCheck;
+    private CheckBox otherCheck;
     private ProgressBar progressBar;
 
     @Override
@@ -56,6 +59,9 @@ public class newResActivity extends ActionBarActivity {
         dinnerCheck = (CheckBox) findViewById(R.id.dinnercheck);
         night_snackCheck = (CheckBox) findViewById(R.id.night_snackcheck);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        riceCheck = (CheckBox) findViewById(R.id.riceCheck);
+        noodleCheck = (CheckBox) findViewById(R.id.noodleCheck);
+        otherCheck = (CheckBox) findViewById(R.id.otherCheck);
 
         addNewResBtn.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -72,8 +78,11 @@ public class newResActivity extends ActionBarActivity {
                 res.setType_dinner(dinnerCheck.isChecked());
                 res.setType_lunch(lunchCheck.isChecked());
                 res.setType_night_snack(night_snackCheck.isChecked());
+                res.setKind_noodle(noodleCheck.isChecked());
+                res.setKind_other(otherCheck.isChecked());
+                res.setKind_rice(riceCheck.isChecked());
 
-                if(info.isResExisting(res.getName())==false && !address.contains("#")
+                if(info.isResExisting(res.getAddress())==false && !address.contains("#")
                         && !address.contains("%")) {
                     progressBar.setVisibility(View.VISIBLE);
                     postRes(url, res);
@@ -82,7 +91,7 @@ public class newResActivity extends ActionBarActivity {
                     Toast.makeText(newResActivity.this, "不合法地址,請重新確認", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Toast.makeText(newResActivity.this, "該餐廳已經存在或是請加入分店名", Toast.LENGTH_LONG).show();
+                    Toast.makeText(newResActivity.this, "該餐廳已經存在", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -138,13 +147,18 @@ public class newResActivity extends ActionBarActivity {
             }
             protected void onPostExecute(Restaurant result){
                 if(result!=null) {
-                    info.saveRes(result);
-                    Intent intent = new Intent(newResActivity.this, MainActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("info", info);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    newResActivity.this.finish();
+                    if(info.isResExisting(res.getAddress())){
+                        Toast.makeText(newResActivity.this, "該餐廳已經存在", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        info.saveRes(result);
+                        Intent intent = new Intent(newResActivity.this, MainActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("info", info);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        newResActivity.this.finish();
+                    }
                 }
                 else{
                     progressBar.setVisibility(View.INVISIBLE);

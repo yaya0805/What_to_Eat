@@ -23,9 +23,9 @@ public class Information implements Serializable{
         resList.add(res);
     }
 
-    public boolean isResExisting(String name){
+    public boolean isResExisting(String address){
         for(int i=0;i<resList.size();i++){
-            if(resList.get(i).getName().compareTo(name)==0) return true;
+            if(resList.get(i).getAddress().compareTo(address)==0) return true;
         }
         return false;
     }

@@ -9,5 +9,8 @@
     <string name="action_search">Search</string>
     <string name="title_activity_new_res">newResActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="arrive_time">希望抵達時間</string>
+    <string name="prompt_rating_spinner">選擇評價</string>
+
 
 </resources>

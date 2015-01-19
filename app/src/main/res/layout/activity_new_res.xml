@@ -58,11 +58,10 @@
         android:layout_height="wrap_content"
         android:text="早餐"
         android:id="@+id/breakfastcheck"
-        android:layout_below="@+id/phoneText"
+        android:checked="false"
+        android:layout_below="@+id/textView10"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="29dp"
-        android:checked="false" />
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -101,5 +100,54 @@
         android:layout_below="@+id/breakfastcheck"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="飯食"
+        android:id="@+id/riceCheck"
+        android:checked="false"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_alignEnd="@+id/textView5" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="其他"
+        android:id="@+id/otherCheck"
+        android:checked="false"
+        android:layout_below="@+id/noodleCheck"
+        android:layout_alignLeft="@+id/noodleCheck"
+        android:layout_alignStart="@+id/noodleCheck" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="麵食"
+        android:id="@+id/noodleCheck"
+        android:checked="false"
+        android:layout_below="@+id/riceCheck"
+        android:layout_alignLeft="@+id/riceCheck"
+        android:layout_alignStart="@+id/riceCheck" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="餐點類型"
+        android:id="@+id/textView5"
+        android:layout_alignBaseline="@+id/textView10"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_toRightOf="@+id/phoneText"
+        android:layout_toEndOf="@+id/phoneText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="適合用餐時間"
+        android:id="@+id/textView10"
+        android:layout_above="@+id/riceCheck"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

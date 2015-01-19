@@ -20,6 +20,9 @@ public class Restaurant implements Serializable{
     private boolean type_lunch;
     private boolean type_breakfast;
     private boolean type_night_snack;
+    private boolean kind_noodle;
+    private boolean kind_rice;
+    private boolean kind_other;
     private Double lng;
     private Double lat;
 
@@ -104,10 +107,45 @@ public class Restaurant implements Serializable{
 
     public Double getLng(){ return lng; }
 
+    public void setKind_noodle(boolean r){ kind_noodle = r; }
+
+    public void setKind_rice(boolean r){ kind_other = r; }
+
+    public void setKind_other(boolean r){ kind_noodle = r; }
+
+    public boolean getKind_noodle(){ return kind_noodle; }
+
+    public boolean getKind_rice(){ return kind_rice; }
+
+    public boolean getKind_other(){ return kind_other; }
+
     public void updatingRating(double newRate){
         double total = rate*commentPeople;
         commentPeople += 1;
         this.rate = (total + newRate)/commentPeople;
+    }
+
+    public boolean equals(Restaurant res){
+        if(res.getAddress().compareTo(this.address)==0)
+            return true;
+        else
+            return false;
+    }
+    public double getDistance(double Lat1, double Long1){
+        double Lat1r = ConvertDegreeToRadians(Lat1);
+        double Lat2r = ConvertDegreeToRadians(this.lat);
+        double Long1r = ConvertDegreeToRadians(Long1);
+        double Long2r = ConvertDegreeToRadians(this.lng);
+
+        double R = 6371; // Earth's radius (km)
+        double d = Math.acos(Math.sin(Lat1r) *
+                Math.sin(Lat2r) + (Math.cos(Lat1r) *
+                Math.cos(Lat2r) *
+                Math.cos(Long2r - Long1r))) * R;
+        return d;
+    }
+    private double ConvertDegreeToRadians(double degrees){
+        return (Math.PI/180)*degrees;
     }
 
 }

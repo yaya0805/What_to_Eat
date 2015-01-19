@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity  {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return ResListFragment.newInstance("List", 0 ,info);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return DecisionFragment.newInstance("Decision", 1);
+                    return DecisionFragment.newInstance("Decision", 1 ,info);
                 default:
                     return null;
             }
