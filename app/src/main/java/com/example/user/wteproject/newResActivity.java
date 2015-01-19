@@ -148,6 +148,7 @@ public class newResActivity extends ActionBarActivity {
             protected void onPostExecute(Restaurant result){
                 if(result!=null) {
                     if(info.isResExisting(res.getAddress())){
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(newResActivity.this, "該餐廳已經存在", Toast.LENGTH_LONG).show();
                     }
                     else {
