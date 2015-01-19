@@ -1,5 +1,6 @@
 package com.example.user.wteproject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +22,11 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.view.ViewGroup.LayoutParams;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import domain.Information;
+import domain.Restaurant;
 
 
 /**
@@ -36,25 +43,40 @@ public class DecisionFragment extends Fragment {
     private static final String ARG_TITLE = "title";
     private static final String ARG_PAGE = "page";
 
+    // speed in m/min
+    private static final double AVG_SPEED = 4500/60;
+
+    //Information
+    private Information info;
+
     // TODO: Rename and change types of parameters
     private String title;
     private int page;
 
     private Spinner waySpinner;
     private Spinner timeSpinner;
+    private Spinner ratingSpinner;
 
     private ArrayAdapter wayAdapter;
     private ArrayAdapter timeAdapter;
+    private ArrayAdapter ratingAdapter;
 
     private Button decideBtn ;
 
     private TextView longView ;
     private TextView latView;
 
+    private CheckBox breakfastCheck;
+    private CheckBox lunchCheck;
+    private CheckBox dinnerCheck;
+    private CheckBox night_snackCheck;
+
     private LocationManager locationManager;
     private LocationListener locationListener;
 
     private OnFragmentInteractionListener mListener;
+
+    private PopupWindow mPopupWindow;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,9 +87,10 @@ public class DecisionFragment extends Fragment {
      * @return A new instance of fragment DecisionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DecisionFragment newInstance(String title, int page) {
+    public static DecisionFragment newInstance(String title, int page ,Information info) {
         DecisionFragment fragment = new DecisionFragment();
         Bundle args = new Bundle();
+        args.putSerializable("info",info);
         args.putString(ARG_TITLE, title);
         args.putInt(ARG_PAGE, page);
         fragment.setArguments(args);
@@ -86,6 +109,7 @@ public class DecisionFragment extends Fragment {
             page = getArguments().getInt(ARG_PAGE);
             title = getArguments().getString(ARG_TITLE);
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            info = (Information) getArguments().getSerializable("info");
         }
 
     }
@@ -98,14 +122,24 @@ public class DecisionFragment extends Fragment {
 
         String[] ways = {"步行" ,"機車" ,"汽車"};
         String[] times = {"10分內","20分內","30分內","40分內"};
+        String[] ratings = {"不限","1星以上","2星以上","3星以上","4星以上","5星以上"};
         final decisionModel model = new decisionModel();
 
-        waySpinner = (Spinner) view.findViewById(R.id.waySpinner);
+        breakfastCheck = (CheckBox) view.findViewById(R.id.breakfastCheck1);
+        lunchCheck = (CheckBox) view.findViewById(R.id.lunchCheck1);
+        dinnerCheck = (CheckBox) view.findViewById(R.id.dinnerCheck1);
+        night_snackCheck = (CheckBox) view.findViewById(R.id.night_snackCheck1);
+
+        //waySpinner = (Spinner) view.findViewById(R.id.waySpinner);
         timeSpinner = (Spinner) view.findViewById(R.id.arriveTimeSpinner);
-        wayAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,ways);
-        waySpinner.setAdapter(wayAdapter);
+        //wayAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,ways);
+        //waySpinner.setAdapter(wayAdapter);
         timeAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,times);
         timeSpinner.setAdapter(timeAdapter);
+        ratingSpinner = (Spinner) view.findViewById(R.id.ratingspinner);
+        ratingAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,ratings);
+        ratingSpinner.setAdapter(ratingAdapter);
+
 
 
         longView = (TextView) view.findViewById(R.id.longView);
@@ -134,13 +168,18 @@ public class DecisionFragment extends Fragment {
                     locationListener = new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
-                            Double longitude = location.getLongitude() * 1000000;
-                            Double latitude = location.getLatitude() * 1000000;
+                            Double longitude = location.getLongitude() /** 100000000*/;
+                            Double latitude = location.getLatitude() /** 10000000*/;
                             Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
                             model.setLatitude(latitude);
                             model.setLongitude(longitude);
                             longView.setText("經度" + longitude);
                             latView.setText("緯度" + latitude);
+                            locationManager.removeUpdates(locationListener);
+
+                            Restaurant result = decide(model);
+                            if(result!=null)
+                                showResult(result);
                         }
 
                         @Override
@@ -159,11 +198,45 @@ public class DecisionFragment extends Fragment {
                         }
                     };
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                }
+                else{
+                    model.timeAsked = 1e9;
+                    model.latitude = 0.0;
+                    model.longitude = 0.0;
+                    Restaurant result = decide(model);
+                    if(result!=null)
+                        showResult(result);
                 }
             }
         });
 
-        // check if gps has been launched.
+        // spinner listener
+        timeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                model.timeAsked = (double)(position+1)*10;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ratingSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                model.ratingAsked = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 
@@ -211,14 +284,65 @@ public class DecisionFragment extends Fragment {
     }
 
     private class decisionModel{
-        private Double longitude;
-        private Double latitude;
+        public Double longitude;
+        public Double latitude;
+        public double timeAsked;
+        public double ratingAsked;
         public void setLongitude(Double longitude){
             this.longitude = longitude;
         }
         public void setLatitude(Double latitude){
             this.latitude = latitude;
         }
+
+    }
+
+    private Restaurant decide(decisionModel model){
+
+
+        List<Restaurant> list = new ArrayList<Restaurant>();
+        List<Restaurant> resultList = new ArrayList<Restaurant>();
+        Restaurant result = null;
+        list = info.getResList();
+        for (int i=1;i<list.size();i++){
+            Restaurant tmp = list.get(i);
+            Log.d("res_name in decide",tmp.getName()+" "+String.valueOf(tmp.getType_breakfast()));
+            if((tmp.getType_breakfast() == breakfastCheck.isChecked() /*&& breakfastCheck.isChecked()*/)
+                || (tmp.getType_lucnch() == lunchCheck.isChecked() && lunchCheck.isChecked())
+                    || (tmp.getType_dinner() == dinnerCheck.isChecked() && dinnerCheck.isChecked())
+                        || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())){
+                double distance = tmp.getDistance(model.latitude,model.longitude)*1000;
+                Log.d("distance",String.valueOf(distance)+" timeAsked:"+String.valueOf(model.timeAsked));
+                Log.d("time needed",String.valueOf(distance/AVG_SPEED));
+                if(distance/AVG_SPEED < model.timeAsked /*&& tmp.getRate()>=model.ratingAsked*/) resultList.add(tmp);
+            }
+        }
+        int random;
+        if (resultList.size()>1) {
+            random = (int) (Math.random() * resultList.size());
+            result = resultList.get(random);
+        }
+
+        return  result;
+    }
+
+    @SuppressLint("NewApi")
+    private void showResult(Restaurant res){
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
+
+// 创建一个PopupWindow
+// 参数1：contentView 指定PopupWindow的内容
+// 参数2：width 指定PopupWindow的width
+// 参数3：height 指定PopupWindow的height
+        TextView titleView = (TextView) popupWindow.findViewById(R.id.titleView);
+        titleView.setText(res.getName());
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mPopupWindow = new PopupWindow(popupWindow,dm.widthPixels, 800);
+        mPopupWindow.showAtLocation(decideBtn, Gravity.CENTER, 0, 50);
+// 获取屏幕和PopupWindow的width和height
+
     }
 
 }
