@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -78,6 +79,8 @@ public class DecisionFragment extends Fragment {
 
     private PopupWindow mPopupWindow;
 
+    private ProgressBar progressBar;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -140,6 +143,7 @@ public class DecisionFragment extends Fragment {
         ratingAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,ratings);
         ratingSpinner.setAdapter(ratingAdapter);
 
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar3);
 
 
         longView = (TextView) view.findViewById(R.id.longView);
@@ -150,6 +154,7 @@ public class DecisionFragment extends Fragment {
             @Override
             public void onClick(View v){
                 Log.d("Button","has been pressed");
+                progressBar.setVisibility(View.VISIBLE);
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     new AlertDialog.Builder(getActivity()).setTitle("抵達時間功能").setMessage("此功能需要GPS,您尚未開啟GPS,要前往設定畫面嗎?")
                             .setCancelable(false).setPositiveButton("Y",new DialogInterface.OnClickListener() {
@@ -180,6 +185,10 @@ public class DecisionFragment extends Fragment {
                             Restaurant result = decide(model);
                             if(result!=null)
                                 showResult(result);
+                            else {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         @Override
@@ -197,7 +206,10 @@ public class DecisionFragment extends Fragment {
 
                         }
                     };
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    Criteria criteria = new Criteria();  //資訊提供者選取標準
+                    String bestProvider;
+                    bestProvider = locationManager.getBestProvider(criteria,true);    //選擇精準度最高的提供者
+                    locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
 
                 }
                 else{
@@ -207,6 +219,10 @@ public class DecisionFragment extends Fragment {
                     Restaurant result = decide(model);
                     if(result!=null)
                         showResult(result);
+                    else {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -326,7 +342,7 @@ public class DecisionFragment extends Fragment {
         return  result;
     }
 
-    @SuppressLint("NewApi")
+
     private void showResult(Restaurant res){
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
@@ -341,6 +357,7 @@ public class DecisionFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         mPopupWindow = new PopupWindow(popupWindow,dm.widthPixels, 800);
         mPopupWindow.showAtLocation(decideBtn, Gravity.CENTER, 0, 50);
+        progressBar.setVisibility(View.INVISIBLE);
 // 获取屏幕和PopupWindow的width和height
 
     }

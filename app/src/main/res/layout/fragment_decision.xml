@@ -12,6 +12,7 @@
         android:id="@+id/decideBtn"
         android:elegantTextHeight="false"
         android:focusable="false"
+        android:background="@drawable/button_decide"
         android:textAppearance="@android:style/TextAppearance.Holo.Large"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -135,5 +136,14 @@
         android:layout_toRightOf="@+id/textView3"
         android:prompt="@string/prompt_rating_spinner"
         android:layout_toEndOf="@+id/textView3" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar3"
+        android:layout_below="@+id/arriveTimeSpinner"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:indeterminate="false" />
 
 </RelativeLayout>
