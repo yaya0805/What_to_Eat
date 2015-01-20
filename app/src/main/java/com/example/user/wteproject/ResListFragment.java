@@ -128,7 +128,7 @@ public class ResListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
-                final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
+                final PopupWindow popupWindow = new PopupWindow(popupView,1000,1000);
 
                 final Restaurant currentRes = info.getResList().get(position);
 
