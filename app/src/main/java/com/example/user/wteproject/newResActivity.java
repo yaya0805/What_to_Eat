@@ -99,7 +99,7 @@ public class newResActivity extends ActionBarActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     postRes(url, res);
                 }
-                else if(address.contains("#") || address.contains("%")){
+                else if(address.contains("#") || address.contains("%") || address.compareTo(null)==0){
                     Toast.makeText(newResActivity.this, "不合法地址,請重新確認", Toast.LENGTH_LONG).show();
                 }
                 else{

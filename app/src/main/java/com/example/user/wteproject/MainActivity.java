@@ -98,7 +98,7 @@ public class MainActivity extends ActionBarActivity  {
     public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
         if(keyCode == KeyEvent.KEYCODE_BACK){
             //不爽做事啦
-
+            return true;
         }
         return super.onKeyDown(keyCode,keyEvent);
     }
