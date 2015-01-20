@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -77,7 +78,6 @@ public class DecisionFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private PopupWindow mPopupWindow;
 
     private ProgressBar progressBar;
 
@@ -355,9 +355,11 @@ public class DecisionFragment extends Fragment {
         titleView.setText(res.getName());
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        mPopupWindow = new PopupWindow(popupWindow,dm.widthPixels, 800);
-        mPopupWindow.showAtLocation(decideBtn, Gravity.CENTER, 0, 50);
+        final PopupWindow mPopupWindow = new PopupWindow(popupWindow,1000, 1000);
+        mPopupWindow.showAtLocation(decideBtn, Gravity.CENTER, 0, 0);
         progressBar.setVisibility(View.INVISIBLE);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setOutsideTouchable(true);
 // 获取屏幕和PopupWindow的width和height
 
     }
