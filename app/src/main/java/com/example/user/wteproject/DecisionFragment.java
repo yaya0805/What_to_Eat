@@ -349,7 +349,7 @@ public class DecisionFragment extends Fragment {
     private void showResult(Restaurant res,View view){
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View popupView = inflater.inflate(R.layout.popup_win_decide, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
+        final PopupWindow popupWindow = new PopupWindow(popupView,1000,1000);
 
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
