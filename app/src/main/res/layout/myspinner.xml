@@ -6,6 +6,7 @@
     android:ellipsize="marquee"
     android:gravity="center"
     android:paddingLeft="8dip"
+    android:background="@drawable/inside"
     android:singleLine="true"
     android:textSize="28sp"
     android:typeface="monospace">
