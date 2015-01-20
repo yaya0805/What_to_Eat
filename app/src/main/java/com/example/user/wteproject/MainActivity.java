@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import domain.Information;
 
@@ -18,7 +19,7 @@ import domain.Information;
 public class MainActivity extends ActionBarActivity  {
 
     FragmentPagerAdapter adapterViewPager;
-    private Information info;
+    public static Information info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +90,21 @@ public class MainActivity extends ActionBarActivity  {
             bundle.putSerializable("info",info);
             intent.putExtras(bundle);
             startActivity(intent);
+            MainActivity.this.finish();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy(){
+        View view = findViewById(R.id.page_bg);
+        view.setBackgroundResource(0);
+        System.gc();
+        super.onDestroy();
+    }
+
     @Override
     public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
         if(keyCode == KeyEvent.KEYCODE_BACK){

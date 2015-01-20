@@ -2,6 +2,7 @@ package com.example.user.wteproject;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.*;
 
@@ -23,6 +25,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 
 import domain.Information;
 import domain.User;
@@ -44,12 +47,12 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+        /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
                 .detectNetwork()   // or .detectAll() for all detectable problems
                 .penaltyLog()
-                .build());
+                .build());*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -69,9 +72,11 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v){
                 try {
                     progressBar.setVisibility(View.VISIBLE);
-                    boolean res = userLogin("root");
+                    userLogin("root");
 
                 } catch (IOException | URISyntaxException | JSONException e) {
+                    Toast.makeText(LoginActivity.this,"連線失敗,請確認網路",Toast.LENGTH_LONG);
+                    progressBar.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
                 }
             }
@@ -100,24 +105,45 @@ public class LoginActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private boolean userLogin(String id) throws IOException, URISyntaxException, JSONException {
-        Gson gson = new Gson();
-        User user = new User();
-        user.setId(id);
-        String jsonString = gson.toJson(user);
-        String result = delegate.doPost(BASE_URL+"/login" , jsonString);
-        if(result!=null){
-            Log.d("info",result);
-            info = gson.fromJson(result,Information.class);
-            Intent intent = new Intent(this,MainActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("info",info);
-            intent.putExtras(bundle);
-            startActivity(intent);
-            progressBar.setVisibility(View.INVISIBLE);
-            return true;
-        }
-        progressBar.setVisibility(View.INVISIBLE);
-        return false;
+    private void userLogin(final String id) throws IOException, URISyntaxException, JSONException {
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                Gson gson = new Gson();
+                User user = new User();
+                user.setId(id);
+                String jsonString = gson.toJson(user);
+                String result = null;
+                try {
+                    result = delegate.doPost(BASE_URL+"/login" , jsonString);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return result;
+            }
+
+            protected void onPostExecute(String result){
+                if(result!=null){
+                    Gson gson = new Gson();
+                    Log.d("info",result);
+                    info = gson.fromJson(result,Information.class);
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("info",info);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    Toast.makeText(LoginActivity.this,"連線失敗,請確認網路",Toast.LENGTH_LONG);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        }.execute(null,null,null);
     }
+
 }

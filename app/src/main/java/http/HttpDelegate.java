@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 public class HttpDelegate {
     private HttpClient client = new DefaultHttpClient();
     String bodyContent;
-    public String doPost(String url,String body) throws URISyntaxException, IOException {
+    public String doPost(String url,String body) throws URISyntaxException, IOException,UnknownHostException {
         HttpPost req = new HttpPost(url);
         req.setHeader("Content-Type","application/json;charset=UTF-8");
         byte[] bytes = body.getBytes("UTF-8");

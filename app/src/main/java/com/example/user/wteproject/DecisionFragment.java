@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -112,7 +113,7 @@ public class DecisionFragment extends Fragment {
             page = getArguments().getInt(ARG_PAGE);
             title = getArguments().getString(ARG_TITLE);
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            info = (Information) getArguments().getSerializable("info");
+            info = MainActivity.info;
         }
 
     }
@@ -183,8 +184,10 @@ public class DecisionFragment extends Fragment {
                             locationManager.removeUpdates(locationListener);
 
                             Restaurant result = decide(model);
-                            if(result!=null)
-                                showResult(result);
+                            if(result!=null) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                showResult(result, view);
+                            }
                             else {
                                 progressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
@@ -218,7 +221,7 @@ public class DecisionFragment extends Fragment {
                     model.longitude = 0.0;
                     Restaurant result = decide(model);
                     if(result!=null)
-                        showResult(result);
+                        showResult(result,view);
                     else {
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
@@ -320,21 +323,21 @@ public class DecisionFragment extends Fragment {
         List<Restaurant> resultList = new ArrayList<Restaurant>();
         Restaurant result = null;
         list = info.getResList();
-        for (int i=1;i<list.size();i++){
+        for (int i=0;i<list.size();i++){
             Restaurant tmp = list.get(i);
-            Log.d("res_name in decide",tmp.getName()+" "+String.valueOf(tmp.getType_breakfast()));
-            if((tmp.getType_breakfast() == breakfastCheck.isChecked() /*&& breakfastCheck.isChecked()*/)
+            Log.d("res_name in decide",tmp.getName()+" "+String.valueOf(tmp.getType_breakfast())+String.valueOf(breakfastCheck.isChecked()));
+            if((tmp.getType_breakfast() == breakfastCheck.isChecked() || breakfastCheck.isChecked())
                 || (tmp.getType_lucnch() == lunchCheck.isChecked() && lunchCheck.isChecked())
                     || (tmp.getType_dinner() == dinnerCheck.isChecked() && dinnerCheck.isChecked())
                         || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())){
                 double distance = tmp.getDistance(model.latitude,model.longitude)*1000;
                 Log.d("distance",String.valueOf(distance)+" timeAsked:"+String.valueOf(model.timeAsked));
-                Log.d("time needed",String.valueOf(distance/AVG_SPEED));
-                if(distance/AVG_SPEED < model.timeAsked /*&& tmp.getRate()>=model.ratingAsked*/) resultList.add(tmp);
+                Log.d("time needed",String.valueOf(distance/AVG_SPEED)+" "+String.valueOf(model.ratingAsked));
+                if(distance/AVG_SPEED < model.timeAsked && tmp.getRate()>=model.ratingAsked) resultList.add(tmp);
             }
         }
         int random;
-        if (resultList.size()>1) {
+        if (resultList.size()>=1) {
             random = (int) (Math.random() * resultList.size());
             result = resultList.get(random);
         }
@@ -343,22 +346,50 @@ public class DecisionFragment extends Fragment {
     }
 
 
-    private void showResult(Restaurant res){
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
+    private void showResult(Restaurant res,View view){
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View popupView = inflater.inflate(R.layout.popup_window, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
 
-// 创建一个PopupWindow
-// 参数1：contentView 指定PopupWindow的内容
-// 参数2：width 指定PopupWindow的width
-// 参数3：height 指定PopupWindow的height
-        TextView titleView = (TextView) popupWindow.findViewById(R.id.titleView);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
+        TextView adrView = (TextView) popupView.findViewById(R.id.textView8);
+        TextView phoneView = (TextView) popupView.findViewById(R.id.textView9);
         titleView.setText(res.getName());
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        mPopupWindow = new PopupWindow(popupWindow,dm.widthPixels, 800);
-        mPopupWindow.showAtLocation(decideBtn, Gravity.CENTER, 0, 50);
-        progressBar.setVisibility(View.INVISIBLE);
-// 获取屏幕和PopupWindow的width和height
+        adrView.setText(res.getAddress());
+        phoneView.setText(res.getPhone());
+
+        CheckBox breakfastCheck = (CheckBox) popupView.findViewById(R.id.checkBox);
+        CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
+        CheckBox dinnerCheck = (CheckBox) popupView.findViewById(R.id.checkBox3);
+        CheckBox night_snackCheck = (CheckBox) popupView.findViewById(R.id.checkBox4);
+        CheckBox riceCheck = (CheckBox) popupView.findViewById(R.id.checkBox5);
+        CheckBox noodleCheck = (CheckBox) popupView.findViewById(R.id.checkBox6);
+        CheckBox otherCheck = (CheckBox) popupView.findViewById(R.id.checkBox7);
+
+        RatingBar ratingBar = (RatingBar) popupView.findViewById(R.id.ratingBar2);
+
+        breakfastCheck.setChecked(res.getType_breakfast());
+        breakfastCheck.setEnabled(false);
+        lunchCheck.setChecked(res.getType_lucnch());
+        lunchCheck.setEnabled(false);
+        dinnerCheck.setChecked(res.getType_dinner());
+        dinnerCheck.setEnabled(false);
+        night_snackCheck.setChecked(res.getType_night_snack());
+        night_snackCheck.setEnabled(false);
+        riceCheck.setChecked(res.getKind_rice());
+        riceCheck.setEnabled(false);
+        noodleCheck.setChecked(res.getKind_noodle());
+        noodleCheck.setEnabled(false);
+        otherCheck.setChecked(res.getKind_other());
+        otherCheck.setEnabled(false);
+
+        ratingBar.setRating(res.getRate());
+        ratingBar.setIsIndicator(true);
+
+        popupWindow.setOutsideTouchable(true);
+        //popupWindow.showAtLocation(view,0,30,200);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
     }
 

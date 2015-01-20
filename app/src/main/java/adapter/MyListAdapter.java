@@ -80,9 +80,11 @@ public class MyListAdapter extends BaseAdapter{
         if (appInfo!=null){
             String name = (String) appInfo.get(keyString[0]);
             String adr = (String) appInfo.get(keyString[1]);
+            float rate = (float) appInfo.get(keyString[2]);
             itemView.itemName.setText(name);
             itemView.itemAdr.setText(adr);
             itemView.itemRating.setIsIndicator(true);
+            itemView.itemRating.setRating(rate);
             //itemView.itemRating.setOnRatingBarChangeListener(new ItemRating_Click(position));
         }
 

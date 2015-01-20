@@ -1,7 +1,12 @@
 package com.example.user.wteproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,10 +21,15 @@ import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +40,7 @@ import java.util.Objects;
 import adapter.MyListAdapter;
 import domain.Information;
 import domain.Restaurant;
+import http.HttpDelegate;
 
 
 /**
@@ -45,6 +56,8 @@ public class ResListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_TITLE = "title";
     private static final String ARG_PAGE = "page";
+
+    public final String BASE_URL = "http://trim-mix-807.appspot.com";
 
     // TODO: Rename and change types of parameters
     private String title;
@@ -82,7 +95,7 @@ public class ResListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            info = (Information) getArguments().getSerializable("info");
+            info = MainActivity.info;
             title = getArguments().getString(ARG_TITLE);
             page = getArguments().getInt(ARG_PAGE);
         }
@@ -94,28 +107,30 @@ public class ResListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+        final ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
         for (int i=0;i<info.getResList().size();i++){
             HashMap<String ,Object> item = new HashMap<String ,Object >();
             item.put("name", info.getResList().get(i).getName());
             item.put("address", info.getResList().get(i).getAddress());
+            item.put("rate",info.getResList().get(i).getRate());
             Log.d("name", info.getResList().get(i).getName());
             Log.d("address",info.getResList().get(i).getAddress());
+            Log.d("rate",String.valueOf(info.getResList().get(i).getRate()));
             list.add(item);
         }
-        String[] selcet = {"name", "address"};
-        int[] ids = {R.id.text1,R.id.text2,R.id.ratingBar};
+        final String[] selcet = {"name", "address","rate"};
+        final int[] ids = {R.id.text1,R.id.text2,R.id.ratingBar};
         listView = (ListView) view.findViewById(R.id.resListView);
         listAdapter = new MyListAdapter(getActivity(),list,R.layout.list_rest
                 ,selcet,ids);
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
                 final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
 
-                Restaurant currentRes = info.getResList().get(position);
+                final Restaurant currentRes = info.getResList().get(position);
 
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
@@ -133,6 +148,9 @@ public class ResListFragment extends Fragment {
                 CheckBox noodleCheck = (CheckBox) popupView.findViewById(R.id.checkBox6);
                 CheckBox otherCheck = (CheckBox) popupView.findViewById(R.id.checkBox7);
 
+                RatingBar ratingBar = (RatingBar) popupView.findViewById(R.id.ratingBar2);
+                final RatingBar ratingBar_in_list = (RatingBar) view.findViewById(R.id.ratingBar);
+
                 breakfastCheck.setChecked(currentRes.getType_breakfast());
                 breakfastCheck.setEnabled(false);
                 lunchCheck.setChecked(currentRes.getType_lucnch());
@@ -147,6 +165,30 @@ public class ResListFragment extends Fragment {
                 noodleCheck.setEnabled(false);
                 otherCheck.setChecked(currentRes.getKind_other());
                 otherCheck.setEnabled(false);
+
+                ratingBar.setRating(currentRes.getRate());
+                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+
+                    @Override
+                    public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
+                        new AlertDialog.Builder(getActivity()).setTitle("評價功能功能").setMessage("確定要給評價:"+String.valueOf(rating)+"?")
+                                .setCancelable(false).setPositiveButton("No",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing;
+                            }
+                        }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                float newRate = info.resList.get(position).comment(rating);
+                                ratingBar.setRating(newRate);
+                                ratingBar_in_list.setRating(newRate);
+                                Log.d("it will ","enter refresh");
+                                refreshRate(info.resList.get(position));
+                            }
+                        }).show();
+                    }
+                });
 
                 popupWindow.setOutsideTouchable(true);
                 //popupWindow.showAtLocation(view,0,30,200);
@@ -198,6 +240,25 @@ public class ResListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         //public void onFragmentInteraction(Uri uri);
+    }
+    public void refreshRate(final Restaurant res){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    HttpDelegate delegate = new HttpDelegate();
+                    Gson gson = new Gson();
+                    String jsonString = gson.toJson(res);
+                    Log.d("this is in the refresh",jsonString);
+                    String result = delegate.doPost(BASE_URL+"/restaurants" , jsonString);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute(null,null,null);
     }
 
 }

@@ -11,7 +11,7 @@ public class Restaurant implements Serializable{
      */
     private static final long serialVersionUID = 1L;
     private String name;
-    private double rate;
+    private float rate;
     private long commentPeople = 0;
     private long id ;
     private String address;
@@ -51,7 +51,7 @@ public class Restaurant implements Serializable{
         this.name = name;
     }
 
-    public void setRate(double rate){
+    public void setRate(float rate){
         this.rate = rate ;
     }
 
@@ -59,7 +59,7 @@ public class Restaurant implements Serializable{
         return name;
     }
 
-    public double getRate(){
+    public float getRate(){
         return rate;
     }
 
@@ -119,8 +119,8 @@ public class Restaurant implements Serializable{
 
     public boolean getKind_other(){ return kind_other; }
 
-    public void updatingRating(double newRate){
-        double total = rate*commentPeople;
+    public void updatingRating(float newRate){
+        float total = rate*commentPeople;
         commentPeople += 1;
         this.rate = (total + newRate)/commentPeople;
     }
@@ -130,6 +130,12 @@ public class Restaurant implements Serializable{
             return true;
         else
             return false;
+    }
+
+    public float comment(float rating){
+        this.rate = (this.rate*commentPeople + rating)/(commentPeople+1);
+        commentPeople++;
+        return this.rate;
     }
     public double getDistance(double Lat1, double Long1){
         double Lat1r = ConvertDegreeToRadians(Lat1);

@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by user on 2014/12/28.
  */
 public class Information implements Serializable{
-    private List<Restaurant> resList;
+    public List<Restaurant> resList;
     public User user;
     public Information(List<Restaurant> map,User user){
         this.resList = map;
