@@ -131,6 +131,7 @@
         android:layout_below="@+id/textView3"
         android:layout_toRightOf="@+id/textView3"
         android:background="@drawable/spin"
+        android:popupBackground="@drawable/inside"
         android:prompt="@string/prompt_rating_spinner"
         android:layout_toEndOf="@+id/textView3" />
 
