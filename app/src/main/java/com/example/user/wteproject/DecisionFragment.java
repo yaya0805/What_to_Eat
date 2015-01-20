@@ -158,31 +158,13 @@ public class DecisionFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     new AlertDialog.Builder(getActivity()).setTitle("抵達時間功能").setMessage("此功能需要GPS,您尚未開啟GPS,要前往設定畫面嗎?")
-                            .setCancelable(false).setPositiveButton("Y",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        }
-                    }).setNegativeButton("N",new DialogInterface.OnClickListener() {
+                    .setPositiveButton("N",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getActivity(),"抵達時間功能將無法使用",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
-                }
-                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    locationListener = new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            Double longitude = location.getLongitude() /** 100000000*/;
-                            Double latitude = location.getLatitude() /** 10000000*/;
-                            Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
-                            model.setLatitude(latitude);
-                            model.setLongitude(longitude);
-                            longView.setText("經度" + longitude);
-                            latView.setText("緯度" + latitude);
-                            locationManager.removeUpdates(locationListener);
-
+                            model.timeAsked = 1e9;
+                            model.latitude = 0.0;
+                            model.longitude = 0.0;
                             Restaurant result = decide(model);
                             if(result!=null) {
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -193,40 +175,77 @@ public class DecisionFragment extends Fragment {
                                 Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
                             }
                         }
-
+                    }).setCancelable(false).setNegativeButton("Y",new DialogInterface.OnClickListener() {
                         @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
+                        public void onClick(DialogInterface dialog, int which) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),0);
 
                         }
-
-                        @Override
-                        public void onProviderEnabled(String provider) {
-
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String provider) {
-
-                        }
-                    };
-                    Criteria criteria = new Criteria();  //資訊提供者選取標準
-                    String bestProvider;
-                    bestProvider = locationManager.getBestProvider(criteria,true);    //選擇精準度最高的提供者
-                    locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
-
+                    }).show();
                 }
                 else{
-                    model.timeAsked = 1e9;
-                    model.latitude = 0.0;
-                    model.longitude = 0.0;
-                    Restaurant result = decide(model);
-                    if(result!=null)
-                        showResult(result,view);
-                    else {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
+                    if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        locationListener = new LocationListener() {
+                            @Override
+                            public void onLocationChanged(Location location) {
+                                Double longitude = location.getLongitude() /** 100000000*/;
+                                Double latitude = location.getLatitude() /** 10000000*/;
+                                Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
+                                model.setLatitude(latitude);
+                                model.setLongitude(longitude);
+                                longView.setText("經度" + longitude);
+                                latView.setText("緯度" + latitude);
+                                locationManager.removeUpdates(locationListener);
+
+                                Restaurant result = decide(model);
+                                if(result!=null) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    showResult(result, view);
+                                }
+                                else {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                            }
+
+                            @Override
+                            public void onProviderEnabled(String provider) {
+
+                            }
+
+                            @Override
+                            public void onProviderDisabled(String provider) {
+
+                            }
+                        };
+                        Criteria criteria = new Criteria();  //資訊提供者選取標準
+                        String bestProvider;
+                        bestProvider = locationManager.getBestProvider(criteria,true);    //選擇精準度最高的提供者
+                        locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
+
                     }
+                    /*else{
+                        model.timeAsked = 1e9;
+                        model.latitude = 0.0;
+                        model.longitude = 0.0;
+                        Restaurant result = decide(model);
+                        if(result!=null) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            showResult(result, view);
+                        }
+                        else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getActivity(),"Sorry,沒有符合您條件的餐廳",Toast.LENGTH_LONG).show();
+                        }
+                    }*/
                 }
+
             }
         });
 
@@ -326,7 +345,7 @@ public class DecisionFragment extends Fragment {
         for (int i=0;i<list.size();i++){
             Restaurant tmp = list.get(i);
             Log.d("res_name in decide",tmp.getName()+" "+String.valueOf(tmp.getType_breakfast())+String.valueOf(breakfastCheck.isChecked()));
-            if((tmp.getType_breakfast() == breakfastCheck.isChecked() || breakfastCheck.isChecked())
+            if((tmp.getType_breakfast() == breakfastCheck.isChecked() && breakfastCheck.isChecked())
                 || (tmp.getType_lucnch() == lunchCheck.isChecked() && lunchCheck.isChecked())
                     || (tmp.getType_dinner() == dinnerCheck.isChecked() && dinnerCheck.isChecked())
                         || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())){
