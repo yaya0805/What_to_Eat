@@ -97,7 +97,7 @@
         android:layout_below="@+id/night_snackCheck1" />
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/arriveTimeSpinner"
         android:layout_below="@+id/textView6"
@@ -130,6 +130,7 @@
         android:id="@+id/ratingspinner"
         android:layout_below="@+id/textView3"
         android:layout_toRightOf="@+id/textView3"
+        android:background="@drawable/spin"
         android:prompt="@string/prompt_rating_spinner"
         android:layout_toEndOf="@+id/textView3" />
 
