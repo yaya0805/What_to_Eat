@@ -4,6 +4,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -18,6 +20,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.Objects;
 
 import adapter.MyListAdapter;
 import domain.Information;
+import domain.Restaurant;
 
 
 /**
@@ -111,19 +115,42 @@ public class ResListFragment extends Fragment {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
                 final PopupWindow popupWindow = new PopupWindow(popupView,1000,1200);
 
-                //Button btnDismiss = (Button)popupView.findViewById(R.id.);
-                //btnDismiss.setOnClickListener(new Button.OnClickListener(){
-/*
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
-                        popupWindow.dismiss();
-                    }});
-*/
-                //popupWindow.setWindowLayoutMode(1000,1000);
+                Restaurant currentRes = info.getResList().get(position);
+
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
+                TextView adrView = (TextView) popupView.findViewById(R.id.textView8);
+                TextView phoneView = (TextView) popupView.findViewById(R.id.textView9);
+                titleView.setText(info.getResList().get(position).getName());
+                adrView.setText(info.getResList().get(position).getAddress());
+                phoneView.setText(info.getResList().get(position).getPhone());
+
+                CheckBox breakfastCheck = (CheckBox) popupView.findViewById(R.id.checkBox);
+                CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
+                CheckBox dinnerCheck = (CheckBox) popupView.findViewById(R.id.checkBox3);
+                CheckBox night_snackCheck = (CheckBox) popupView.findViewById(R.id.checkBox4);
+                CheckBox riceCheck = (CheckBox) popupView.findViewById(R.id.checkBox5);
+                CheckBox noodleCheck = (CheckBox) popupView.findViewById(R.id.checkBox6);
+                CheckBox otherCheck = (CheckBox) popupView.findViewById(R.id.checkBox7);
+
+                breakfastCheck.setChecked(currentRes.getType_breakfast());
+                breakfastCheck.setEnabled(false);
+                lunchCheck.setChecked(currentRes.getType_lucnch());
+                lunchCheck.setEnabled(false);
+                dinnerCheck.setChecked(currentRes.getType_dinner());
+                dinnerCheck.setEnabled(false);
+                night_snackCheck.setChecked(currentRes.getType_night_snack());
+                night_snackCheck.setEnabled(false);
+                riceCheck.setChecked(currentRes.getKind_rice());
+                riceCheck.setEnabled(false);
+                noodleCheck.setChecked(currentRes.getKind_noodle());
+                noodleCheck.setEnabled(false);
+                otherCheck.setChecked(currentRes.getKind_other());
+                otherCheck.setEnabled(false);
+
                 popupWindow.setOutsideTouchable(true);
-                popupWindow.showAtLocation(view,0,30,200);
+                //popupWindow.showAtLocation(view,0,30,200);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
 
 

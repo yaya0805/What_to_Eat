@@ -1,10 +1,13 @@
 package com.example.user.wteproject;
 
+
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,12 +46,21 @@ public class newResActivity extends ActionBarActivity {
     private CheckBox otherCheck;
     private ProgressBar progressBar;
 
+    private ActionBar actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_res);
 
         info = (Information) getIntent().getExtras().getSerializable("info");
+
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_bar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         addNewResBtn = (Button) findViewById(R.id.addNewResBtn);
         adrText = (EditText) findViewById(R.id.adrText);
@@ -116,8 +128,29 @@ public class newResActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == android.R.id.home){
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(this,MainActivity.class);
+            bundle.putSerializable("info",info);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(this,MainActivity.class);
+            bundle.putSerializable("info",info);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            return super.onKeyDown(keyCode,keyEvent);
+        }
+        return super.onKeyDown(keyCode,keyEvent);
     }
 
     private void postRes(final String url,final Restaurant res){

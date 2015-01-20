@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,7 +25,11 @@ public class MainActivity extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_bar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         info = (Information) getIntent().getExtras().getSerializable("info");
+
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),info);
@@ -88,6 +93,14 @@ public class MainActivity extends ActionBarActivity  {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            //不爽做事啦
+
+        }
+        return super.onKeyDown(keyCode,keyEvent);
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {

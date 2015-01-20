@@ -63,25 +63,14 @@ public class LoginActivity extends ActionBarActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        t = (TextView) findViewById(R.id.textView);
+
         btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v){
                 try {
-/* TODO:
-    Login input
-
-
-
-
- */
                     progressBar.setVisibility(View.VISIBLE);
                     boolean res = userLogin("root");
-                    /*int num = info.user.hasRate;
-                    String str;
-                    str = Integer.toString(num);*/
-                    t.setText(Boolean.toString(res) + " " + info.getResList().size());
-                    //LoginActivity.this.finish();
+
                 } catch (IOException | URISyntaxException | JSONException e) {
                     e.printStackTrace();
                 }
