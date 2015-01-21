@@ -124,7 +124,7 @@ public class ResListFragment extends Fragment {
             list.add(item);
         }
         final String[] selcet = {"name", "address","rate"};
-        final int[] ids = {R.id.text1,R.id.text2,R.id.ratingBar};
+        final int[] ids = {R.id.text1,R.id.text2};
         listView = (ListView) view.findViewById(R.id.resListView);
         listAdapter = new MyListAdapter(getActivity(),list,R.layout.list_rest
                 ,selcet,ids);
@@ -157,7 +157,7 @@ public class ResListFragment extends Fragment {
                 CheckBox otherCheck = (CheckBox) popupView.findViewById(R.id.checkBox7);
 
                 RatingBar ratingBar = (RatingBar) popupView.findViewById(R.id.ratingBar2);
-                final RatingBar ratingBar_in_list = (RatingBar) view.findViewById(R.id.ratingBar);
+
 
                 breakfastCheck.setChecked(currentRes.getType_breakfast());
                 breakfastCheck.setEnabled(false);
@@ -192,7 +192,7 @@ public class ResListFragment extends Fragment {
                                 public void onClick(DialogInterface dialog, int which) {
                                     float newRate = info.resList.get(position).comment(rating);
                                     ratingBar.setRating(newRate);
-                                    ratingBar_in_list.setRating(newRate);
+
                                     Log.d("it will ", "enter refresh");
                                     refreshRate(info.resList.get(position));
                                 }
@@ -202,6 +202,7 @@ public class ResListFragment extends Fragment {
                 });
 
                 popupWindow.setOutsideTouchable(true);
+                popupWindow.setFocusable(true);
                 //popupWindow.showAtLocation(view,0,30,200);
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 

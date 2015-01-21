@@ -32,7 +32,6 @@ public class MyListAdapter extends BaseAdapter{
     private class ItemView{
         TextView itemName;
         TextView itemAdr;
-        RatingBar itemRating;
     }
 
     public MyListAdapter(Context c,ArrayList<HashMap<String,Object>> list ,int resource,String[] from ,int[] to){
@@ -73,7 +72,6 @@ public class MyListAdapter extends BaseAdapter{
             itemView = new ItemView();
             itemView.itemName = (TextView) convertView.findViewById(viewId[0]);
             itemView.itemAdr = (TextView) convertView.findViewById(viewId[1]);
-            itemView.itemRating = (RatingBar) convertView.findViewById(viewId[2]);
             convertView.setTag(itemView);
         }
         HashMap<String,Object> appInfo = mList.get(position);
@@ -83,8 +81,7 @@ public class MyListAdapter extends BaseAdapter{
             float rate = (float) appInfo.get(keyString[2]);
             itemView.itemName.setText(name);
             itemView.itemAdr.setText(adr);
-            itemView.itemRating.setIsIndicator(true);
-            itemView.itemRating.setRating(rate);
+
             //itemView.itemRating.setOnRatingBarChangeListener(new ItemRating_Click(position));
         }
 

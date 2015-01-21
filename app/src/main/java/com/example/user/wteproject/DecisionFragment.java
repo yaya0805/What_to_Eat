@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import domain.Information;
@@ -69,6 +70,8 @@ public class DecisionFragment extends Fragment {
     private CheckBox riceCheck;
     private CheckBox noodleCheck;
     private CheckBox otherCheck;
+
+    private boolean flag;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -138,7 +141,7 @@ public class DecisionFragment extends Fragment {
         timeSpinner = (Spinner) view.findViewById(R.id.arriveTimeSpinner);
         //wayAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,ways);
         //waySpinner.setAdapter(wayAdapter);
-        timeAdapter = new ArrayAdapter(getActivity(),R.layout.myspinner,times);
+        timeAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,times);
         timeSpinner.setAdapter(timeAdapter);
         ratingSpinner = (Spinner) view.findViewById(R.id.ratingspinner);
         ratingAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,ratings);
@@ -160,10 +163,11 @@ public class DecisionFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getActivity(),"抵達時間功能將無法使用",Toast.LENGTH_SHORT).show();
+                            flag = false;
                             model.timeAsked = 1e9;
                             model.latitude = 0.0;
                             model.longitude = 0.0;
-                            Restaurant result = decide(model);
+                            HashMap<String,Object> result = decide(model);
                             if(result!=null) {
                                 progressBar.setVisibility(View.INVISIBLE);
                                 showResult(result, view);
@@ -184,6 +188,7 @@ public class DecisionFragment extends Fragment {
                 }
                 else{
                     if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        flag = true;
                         locationListener = new LocationListener() {
                             @Override
                             public void onLocationChanged(Location location) {
@@ -194,7 +199,7 @@ public class DecisionFragment extends Fragment {
                                 model.setLongitude(longitude);
                                 locationManager.removeUpdates(locationListener);
 
-                                Restaurant result = decide(model);
+                                HashMap<String,Object> result = decide(model);
                                 if(result!=null) {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     showResult(result, view);
@@ -331,12 +336,12 @@ public class DecisionFragment extends Fragment {
 
     }
 
-    private Restaurant decide(decisionModel model){
+    private HashMap<String,Object> decide(decisionModel model){
 
 
         List<Restaurant> list = new ArrayList<Restaurant>();
-        List<Restaurant> resultList = new ArrayList<Restaurant>();
-        Restaurant result = null;
+        List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
+        HashMap<String,Object> result = null;
         list = info.getResList();
         for (int i=0;i<list.size();i++){
             Restaurant tmp = list.get(i);
@@ -351,7 +356,12 @@ public class DecisionFragment extends Fragment {
                 double distance = tmp.getDistance(model.latitude,model.longitude)*1000;
                 Log.d("distance",String.valueOf(distance)+" timeAsked:"+String.valueOf(model.timeAsked));
                 Log.d("time needed",String.valueOf(distance/AVG_SPEED)+" "+String.valueOf(model.ratingAsked));
-                if(distance/AVG_SPEED < model.timeAsked && tmp.getRate()>=model.ratingAsked) resultList.add(tmp);
+                if(distance/AVG_SPEED < model.timeAsked && tmp.getRate()>=model.ratingAsked) {
+                    HashMap<String,Object> item = new HashMap<String,Object>();
+                    item.put("res",tmp);
+                    item.put("arrive",String.valueOf(Math.round((distance/AVG_SPEED)/0.1)*0.1));
+                    resultList.add(item);
+                }
             }
         }
         int random;
@@ -364,15 +374,23 @@ public class DecisionFragment extends Fragment {
     }
 
 
-    private void showResult(Restaurant res,View view){
+    private void showResult(HashMap<String,Object> item,View view){
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View popupView = inflater.inflate(R.layout.popup_win_decide, null);
         popupWindow = new PopupWindow(popupView,1000,1000);
 
+        Restaurant res = (Restaurant) item.get("res");
+
+        String time = (String) item.get("arrive");
+
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
         TextView adrView = (TextView) popupView.findViewById(R.id.textView8);
-
+        TextView timeView = (TextView) popupView.findViewById(R.id.arriveTimeView);
+        if(flag)
+            timeView.setText("抵達時間約:"+time+"分");
+        else
+            timeView.setVisibility(View.INVISIBLE);
         titleView.setText(res.getName());
         adrView.setText(res.getAddress());
 
@@ -406,6 +424,7 @@ public class DecisionFragment extends Fragment {
         ratingBar.setIsIndicator(true);
 
         popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
         //popupWindow.showAtLocation(view,0,30,200);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 

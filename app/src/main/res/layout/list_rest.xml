@@ -34,17 +34,5 @@
         </LinearLayout>
     </LinearLayout>
 
-    <RatingBar
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:id="@+id/ratingBar"
-        android:layout_gravity="right|center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:clickable="true" />
-
 
 </RelativeLayout>
