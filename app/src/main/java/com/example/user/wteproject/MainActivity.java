@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity  {
         SysApplication.getInstance().addActivity(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_action_bar);
+        //getSupportActionBar().setLogo(R.drawable.ic_action_bar);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         info = (Information) getIntent().getExtras().getSerializable("info");
 

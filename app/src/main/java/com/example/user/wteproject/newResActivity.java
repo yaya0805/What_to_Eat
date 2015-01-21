@@ -59,7 +59,7 @@ public class newResActivity extends ActionBarActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_action_bar);
+        //getSupportActionBar().setLogo(R.drawable.ic_action_bar);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
