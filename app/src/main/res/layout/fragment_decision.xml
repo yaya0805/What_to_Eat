@@ -5,6 +5,15 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:id="@+id/imageView2"
+        android:background="@drawable/word"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,45 +25,16 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="篩選條件："
-        android:textSize="30dp"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="用餐時間"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="參考評價"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/textView2"
-        android:layout_toRightOf="@+id/textView3"
-        android:layout_toEndOf="@+id/textView3" />
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="早餐"
         android:id="@+id/breakfastCheckin_decision"
-        android:layout_below="@+id/textView3"
+        android:checked="false"
+        android:layout_below="@+id/imageView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:checked="false" />
+        android:layout_marginTop="23dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -86,36 +66,28 @@
         android:layout_alignParentStart="true"
         android:checked="false" />
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="抵達時間"
-        android:id="@+id/textView6"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="37dp"
-        android:layout_below="@+id/night_snackCheckin_decision" />
-
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/arriveTimeSpinner"
-        android:layout_below="@+id/textView6"
+        android:prompt="@string/arrive_time"
+        android:spinnerMode="dropdown"
+        android:layout_above="@+id/decideBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:prompt="@string/arrive_time"
-        android:spinnerMode="dropdown" />
+        android:layout_marginBottom="19dp" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingspinner"
-        android:layout_below="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3"
         android:background="@drawable/spin"
         android:popupBackground="@drawable/inside"
         android:prompt="@string/prompt_rating_spinner"
-        android:layout_toEndOf="@+id/textView3" />
+        android:layout_below="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_alignLeft="@+id/imageView6"
+        android:layout_alignStart="@+id/imageView6" />
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -126,26 +98,16 @@
         android:visibility="invisible"
         android:indeterminate="false" />
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="餐點類型"
-        android:id="@+id/textView99"
-        android:layout_above="@+id/night_snackCheckin_decision"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@+id/ratingspinner"
-        android:layout_alignStart="@+id/ratingspinner" />
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="飯食"
         android:id="@+id/riceCheckin_decision"
-        android:layout_below="@+id/textView99"
-        android:layout_alignLeft="@+id/textView99"
-        android:layout_alignStart="@+id/textView99"
-        android:checked="false" />
+        android:checked="false"
+        android:layout_below="@+id/ratingspinner"
+        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignStart="@+id/imageView5"
+        android:layout_marginTop="75dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -162,9 +124,48 @@
         android:layout_height="wrap_content"
         android:text="其他"
         android:id="@+id/otherCheckin_decision"
+        android:checked="false"
         android:layout_below="@+id/noodleCheckin_decision"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6"
-        android:checked="false" />
+        android:layout_alignLeft="@+id/noodleCheckin_decision"
+        android:layout_alignStart="@+id/noodleCheckin_decision" />
+
+    <ImageView
+        android:layout_width="95dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView3"
+        android:background="@drawable/word_time"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <ImageView
+        android:layout_width="95dp"
+        android:layout_height="40dp"
+        android:background="@drawable/word_arrive"
+        android:id="@+id/imageView4"
+        android:layout_below="@+id/otherCheckin_decision"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="95dp"
+        android:layout_height="40dp"
+        android:background="@drawable/word_type"
+        android:id="@+id/imageView5"
+        android:layout_alignBottom="@+id/dinnerCheckin_decision"
+        android:layout_alignRight="@+id/decideBtn"
+        android:layout_alignEnd="@+id/decideBtn"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
+
+    <ImageView
+        android:layout_width="95dp"
+        android:layout_height="40dp"
+        android:background="@drawable/word_rate"
+        android:id="@+id/imageView6"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignStart="@+id/imageView5" />
 
 </RelativeLayout>
