@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +126,7 @@ public class DecisionFragment extends Fragment {
 
 
         String[] ways = {"步行" ,"機車" ,"汽車"};
-        String[] times = {"10分內","20分內","30分內","40分內"};
+        String[] times = {"10分內","20分內","30分內","40分內","不限"};
         String[] ratings = {"不限","1星以上","2星以上","3星以上","4星以上","5星以上"};
         final decisionModel model = new decisionModel();
 
@@ -157,14 +158,14 @@ public class DecisionFragment extends Fragment {
             public void onClick(View v){
                 Log.d("Button","has been pressed");
                 progressBar.setVisibility(View.VISIBLE);
-                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
                     new AlertDialog.Builder(getActivity()).setTitle("抵達時間功能").setMessage("此功能需要GPS,您尚未開啟GPS,要前往設定畫面嗎?")
                     .setPositiveButton("N",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getActivity(),"抵達時間功能將無法使用",Toast.LENGTH_SHORT).show();
                             flag = false;
-                            model.timeAsked = 1e9;
+                            model.timeAsked = 1000;
                             model.latitude = 0.0;
                             model.longitude = 0.0;
                             HashMap<String,Object> result = decide(model);
@@ -187,7 +188,7 @@ public class DecisionFragment extends Fragment {
                     }).show();
                 }
                 else{
-                    if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
                         flag = true;
                         locationListener = new LocationListener() {
                             @Override
@@ -197,7 +198,6 @@ public class DecisionFragment extends Fragment {
                                 Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
                                 model.setLatitude(latitude);
                                 model.setLongitude(longitude);
-                                locationManager.removeUpdates(locationListener);
 
                                 HashMap<String,Object> result = decide(model);
                                 if(result!=null) {
@@ -255,7 +255,8 @@ public class DecisionFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                model.timeAsked = (double)(position+1)*10;
+                if(position==4) model.timeAsked = 1000;
+                else model.timeAsked = (double)(position+1)*10;
             }
 
             @Override
@@ -349,18 +350,21 @@ public class DecisionFragment extends Fragment {
             if((tmp.getType_breakfast() == breakfastCheck.isChecked() && breakfastCheck.isChecked())
                 || (tmp.getType_lunch() == lunchCheck.isChecked() && lunchCheck.isChecked())
                     || (tmp.getType_dinner() == dinnerCheck.isChecked() && dinnerCheck.isChecked())
-                        || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())
-                    ||(tmp.getKind_rice() == riceCheck.isChecked() && riceCheck.isChecked())
-                    ||(tmp.getKind_noodle() == noodleCheck.isChecked() && noodleCheck.isChecked())
-                    ||(tmp.getKind_other() == otherCheck.isChecked() && otherCheck.isChecked())){
-                double distance = tmp.getDistance(model.latitude,model.longitude)*1000;
-                Log.d("distance",String.valueOf(distance)+" timeAsked:"+String.valueOf(model.timeAsked));
-                Log.d("time needed",String.valueOf(distance/AVG_SPEED)+" "+String.valueOf(model.ratingAsked));
-                if(distance/AVG_SPEED < model.timeAsked && tmp.getRate()>=model.ratingAsked) {
-                    HashMap<String,Object> item = new HashMap<String,Object>();
-                    item.put("res",tmp);
-                    item.put("arrive",String.valueOf(Math.round((distance/AVG_SPEED)/0.1)*0.1));
-                    resultList.add(item);
+                        || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())){
+                if((tmp.getKind_rice() == riceCheck.isChecked() && riceCheck.isChecked())
+                        ||(tmp.getKind_noodle() == noodleCheck.isChecked() && noodleCheck.isChecked())
+                        ||(tmp.getKind_other() == otherCheck.isChecked() && otherCheck.isChecked())) {
+                    double distance = tmp.getDistance(model.latitude, model.longitude) * 1000;
+                    Log.d("distance", String.valueOf(distance) + " timeAsked:" + String.valueOf(model.timeAsked));
+                    Log.d("time needed", String.valueOf(distance / AVG_SPEED) + " " + String.valueOf(model.ratingAsked));
+                    if (distance / AVG_SPEED < model.timeAsked && tmp.getRate() >= model.ratingAsked) {
+                        HashMap<String, Object> item = new HashMap<String, Object>();
+                        NumberFormat nf = NumberFormat.getInstance();
+                        nf.setMaximumFractionDigits( 2 );
+                        item.put("res", tmp);
+                        item.put("arrive", String.valueOf(nf.format(distance / AVG_SPEED)) );
+                        resultList.add(item);
+                    }
                 }
             }
         }

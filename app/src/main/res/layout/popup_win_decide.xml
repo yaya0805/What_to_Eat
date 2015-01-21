@@ -127,8 +127,9 @@
         android:layout_below="@+id/checkBox4"
         android:layout_alignLeft="@+id/checkBox2"
         android:layout_alignStart="@+id/checkBox2"
-        android:layout_toLeftOf="@+id/checkBox4"
         android:layout_toStartOf="@+id/checkBox4"
-        android:layout_above="@+id/ratingBar2" />
+        android:layout_above="@+id/ratingBar2"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout" />
 
 </RelativeLayout>
