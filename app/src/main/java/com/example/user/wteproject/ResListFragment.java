@@ -68,6 +68,8 @@ public class ResListFragment extends Fragment {
     private ListView listView ;
     private ListAdapter listAdapter;
 
+    private PopupWindow popupWindow;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -128,7 +130,7 @@ public class ResListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 View popupView = inflater.inflate(R.layout.popup_window, null);
-                final PopupWindow popupWindow = new PopupWindow(popupView,1000,1000);
+                popupWindow = new PopupWindow(popupView,1000,1000);
 
                 final Restaurant currentRes = info.getResList().get(position);
 
@@ -174,24 +176,25 @@ public class ResListFragment extends Fragment {
 
                     @Override
                     public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
-                        Log.i("change","happens");
-                        if(fromUser==true)
-                        new AlertDialog.Builder(getActivity()).setTitle("評價功能功能").setMessage("確定要給評價:"+String.valueOf(rating)+"?")
-                                .setCancelable(false).setPositiveButton("No",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing;
-                            }
-                        }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                float newRate = info.resList.get(position).comment(rating);
-                                ratingBar.setRating(newRate);
-                                ratingBar_in_list.setRating(newRate);
-                                Log.d("it will ","enter refresh");
-                                refreshRate(info.resList.get(position));
-                            }
-                        }).show();
+                        Log.i("change", "happens");
+                        if (fromUser) {
+                            new AlertDialog.Builder(getActivity()).setTitle("評價功能功能").setMessage("確定要給評價:" + String.valueOf(rating) + "?")
+                                    .setCancelable(false).setPositiveButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing;
+                                }
+                            }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    float newRate = info.resList.get(position).comment(rating);
+                                    ratingBar.setRating(newRate);
+                                    ratingBar_in_list.setRating(newRate);
+                                    Log.d("it will ", "enter refresh");
+                                    refreshRate(info.resList.get(position));
+                                }
+                            }).show();
+                        }
                     }
                 });
 

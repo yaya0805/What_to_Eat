@@ -375,7 +375,7 @@ public class DecisionFragment extends Fragment {
 
         titleView.setText(res.getName());
         adrView.setText(res.getAddress());
-        
+
 
         CheckBox breakfastCheck = (CheckBox) popupView.findViewById(R.id.checkBox);
         CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
