@@ -122,16 +122,15 @@
             android:layout_gravity="bottom" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="請給評價  :"
-        android:id="@+id/tipsView"
-        android:layout_below="@+id/checkBox4"
-        android:layout_alignLeft="@+id/checkBox2"
-        android:layout_alignStart="@+id/checkBox2"
-        android:layout_toLeftOf="@+id/checkBox4"
-        android:layout_toStartOf="@+id/checkBox4"
-        android:layout_above="@+id/ratingBar2" />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/rice"
+        android:id="@+id/imageView10"
+        android:layout_alignBottom="@+id/checkBox4"
+        android:layout_toRightOf="@+id/checkBox3"
+        android:layout_toEndOf="@+id/checkBox3"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp" />
 
 </RelativeLayout>
