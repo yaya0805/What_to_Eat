@@ -26,6 +26,7 @@ import domain.GeoResult;
 import domain.Information;
 import domain.Restaurant;
 import http.HttpDelegate;
+import service.SysApplication;
 
 
 public class newResActivity extends ActionBarActivity {
@@ -52,6 +53,7 @@ public class newResActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_res);
+        SysApplication.getInstance().addActivity(this);
 
         info = (Information) getIntent().getExtras().getSerializable("info");
 

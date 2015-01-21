@@ -1,5 +1,7 @@
 package com.example.user.wteproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -8,12 +10,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import domain.Information;
+import service.SysApplication;
 
 
 public class MainActivity extends ActionBarActivity  {
@@ -25,6 +29,7 @@ public class MainActivity extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SysApplication.getInstance().addActivity(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_action_bar);
@@ -108,7 +113,18 @@ public class MainActivity extends ActionBarActivity  {
     @Override
     public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            //不爽做事啦
+            new AlertDialog.Builder(this).setTitle("Where to Eat").setMessage("確定要離開嗎?")
+                    .setCancelable(false).setPositiveButton("No",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing;
+                }
+            }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SysApplication.getInstance().exit();
+                }
+            }).show();
             return true;
         }
         return super.onKeyDown(keyCode,keyEvent);

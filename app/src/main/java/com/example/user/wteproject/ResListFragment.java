@@ -171,6 +171,8 @@ public class ResListFragment extends Fragment {
 
                     @Override
                     public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
+                        Log.i("change","happens");
+                        if(fromUser==true)
                         new AlertDialog.Builder(getActivity()).setTitle("評價功能功能").setMessage("確定要給評價:"+String.valueOf(rating)+"?")
                                 .setCancelable(false).setPositiveButton("No",new DialogInterface.OnClickListener() {
                             @Override

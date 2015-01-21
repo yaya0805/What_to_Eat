@@ -30,6 +30,7 @@ import java.net.UnknownHostException;
 import domain.Information;
 import domain.User;
 import http.HttpDelegate;
+import service.SysApplication;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -46,6 +47,7 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SysApplication.getInstance().addActivity(this);
 
         /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
