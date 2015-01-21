@@ -25,6 +25,7 @@ public class Restaurant implements Serializable{
     private boolean kind_other;
     private Double lng;
     private Double lat;
+    private float newRate;
 
     //empty constructor
     public Restaurant(){}
@@ -87,7 +88,7 @@ public class Restaurant implements Serializable{
 
     public void setType_lunch(boolean r){ type_lunch = r; }
 
-    public boolean getType_lucnch(){ return type_lunch;}
+    public boolean getType_lunch(){ return type_lunch;}
 
     public void setType_breakfast(boolean r){ type_breakfast =r; }
 
@@ -109,15 +110,19 @@ public class Restaurant implements Serializable{
 
     public void setKind_noodle(boolean r){ kind_noodle = r; }
 
-    public void setKind_rice(boolean r){ kind_other = r; }
+    public void setKind_rice(boolean r){ kind_rice = r; }
 
-    public void setKind_other(boolean r){ kind_noodle = r; }
+    public void setKind_other(boolean r){ kind_other = r; }
 
     public boolean getKind_noodle(){ return kind_noodle; }
 
     public boolean getKind_rice(){ return kind_rice; }
 
     public boolean getKind_other(){ return kind_other; }
+
+    public void setNewRate(float newRate){ this.newRate = newRate;}
+
+    public float getNewRate(){ return newRate; }
 
     public void updatingRating(float newRate){
         float total = rate*commentPeople;
@@ -133,6 +138,7 @@ public class Restaurant implements Serializable{
     }
 
     public float comment(float rating){
+        this.newRate = rating;
         this.rate = (this.rate*commentPeople + rating)/(commentPeople+1);
         commentPeople++;
         return this.rate;

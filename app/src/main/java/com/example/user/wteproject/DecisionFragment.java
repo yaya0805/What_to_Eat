@@ -1,7 +1,5 @@
 package com.example.user.wteproject;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,14 +13,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import android.view.ViewGroup.LayoutParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +61,14 @@ public class DecisionFragment extends Fragment {
 
     private Button decideBtn ;
 
-    private TextView longView ;
-    private TextView latView;
 
     private CheckBox breakfastCheck;
     private CheckBox lunchCheck;
     private CheckBox dinnerCheck;
     private CheckBox night_snackCheck;
+    private CheckBox riceCheck;
+    private CheckBox noodleCheck;
+    private CheckBox otherCheck;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -129,10 +126,13 @@ public class DecisionFragment extends Fragment {
         String[] ratings = {"不限","1星以上","2星以上","3星以上","4星以上","5星以上"};
         final decisionModel model = new decisionModel();
 
-        breakfastCheck = (CheckBox) view.findViewById(R.id.breakfastCheck1);
-        lunchCheck = (CheckBox) view.findViewById(R.id.lunchCheck1);
-        dinnerCheck = (CheckBox) view.findViewById(R.id.dinnerCheck1);
-        night_snackCheck = (CheckBox) view.findViewById(R.id.night_snackCheck1);
+        breakfastCheck = (CheckBox) view.findViewById(R.id.breakfastCheckin_decision);
+        lunchCheck = (CheckBox) view.findViewById(R.id.lunchCheckin_decision);
+        dinnerCheck = (CheckBox) view.findViewById(R.id.dinnerCheckin_decision);
+        night_snackCheck = (CheckBox) view.findViewById(R.id.night_snackCheckin_decision);
+        riceCheck = (CheckBox) view.findViewById(R.id.riceCheckin_decision);
+        noodleCheck = (CheckBox) view.findViewById(R.id.noodleCheckin_decision);
+        otherCheck = (CheckBox) view.findViewById(R.id.otherCheckin_decision);
 
         //waySpinner = (Spinner) view.findViewById(R.id.waySpinner);
         timeSpinner = (Spinner) view.findViewById(R.id.arriveTimeSpinner);
@@ -147,8 +147,6 @@ public class DecisionFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar3);
 
 
-        longView = (TextView) view.findViewById(R.id.longView);
-        latView = (TextView) view.findViewById(R.id.latView);
 
         decideBtn = (Button) view.findViewById(R.id.decideBtn);
         decideBtn.setOnClickListener(new Button.OnClickListener(){
@@ -194,8 +192,6 @@ public class DecisionFragment extends Fragment {
                                 Log.d("Location=", "X=" + longitude.intValue() + ", Y=" + latitude.intValue());
                                 model.setLatitude(latitude);
                                 model.setLongitude(longitude);
-                                longView.setText("經度" + longitude);
-                                latView.setText("緯度" + latitude);
                                 locationManager.removeUpdates(locationListener);
 
                                 Restaurant result = decide(model);
@@ -227,7 +223,7 @@ public class DecisionFragment extends Fragment {
                         Criteria criteria = new Criteria();  //資訊提供者選取標準
                         String bestProvider;
                         bestProvider = locationManager.getBestProvider(criteria,true);    //選擇精準度最高的提供者
-                        locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
+                        locationManager.requestLocationUpdates(bestProvider, 0, 1000, locationListener);
 
                     }
                     /*else{
@@ -346,9 +342,12 @@ public class DecisionFragment extends Fragment {
             Restaurant tmp = list.get(i);
             Log.d("res_name in decide",tmp.getName()+" "+String.valueOf(tmp.getType_breakfast())+String.valueOf(breakfastCheck.isChecked()));
             if((tmp.getType_breakfast() == breakfastCheck.isChecked() && breakfastCheck.isChecked())
-                || (tmp.getType_lucnch() == lunchCheck.isChecked() && lunchCheck.isChecked())
+                || (tmp.getType_lunch() == lunchCheck.isChecked() && lunchCheck.isChecked())
                     || (tmp.getType_dinner() == dinnerCheck.isChecked() && dinnerCheck.isChecked())
-                        || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())){
+                        || (tmp.getType_night_snack() == night_snackCheck.isChecked() && night_snackCheck.isChecked())
+                    ||(tmp.getKind_rice() == riceCheck.isChecked() && riceCheck.isChecked())
+                    ||(tmp.getKind_noodle() == noodleCheck.isChecked() && noodleCheck.isChecked())
+                    ||(tmp.getKind_other() == otherCheck.isChecked() && otherCheck.isChecked())){
                 double distance = tmp.getDistance(model.latitude,model.longitude)*1000;
                 Log.d("distance",String.valueOf(distance)+" timeAsked:"+String.valueOf(model.timeAsked));
                 Log.d("time needed",String.valueOf(distance/AVG_SPEED)+" "+String.valueOf(model.ratingAsked));
@@ -373,10 +372,10 @@ public class DecisionFragment extends Fragment {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
         TextView adrView = (TextView) popupView.findViewById(R.id.textView8);
-        TextView phoneView = (TextView) popupView.findViewById(R.id.textView9);
+
         titleView.setText(res.getName());
         adrView.setText(res.getAddress());
-        phoneView.setText(res.getPhone());
+        
 
         CheckBox breakfastCheck = (CheckBox) popupView.findViewById(R.id.checkBox);
         CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
@@ -390,7 +389,7 @@ public class DecisionFragment extends Fragment {
 
         breakfastCheck.setChecked(res.getType_breakfast());
         breakfastCheck.setEnabled(false);
-        lunchCheck.setChecked(res.getType_lucnch());
+        lunchCheck.setChecked(res.getType_lunch());
         lunchCheck.setEnabled(false);
         dinnerCheck.setChecked(res.getType_dinner());
         dinnerCheck.setEnabled(false);

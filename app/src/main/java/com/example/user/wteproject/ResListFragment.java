@@ -132,17 +132,20 @@ public class ResListFragment extends Fragment {
 
                 final Restaurant currentRes = info.getResList().get(position);
 
+                Gson gson = new Gson();
+                Log.d("currentRes in res list:",gson.toJson(currentRes));
+
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 TextView titleView = (TextView) popupView.findViewById(R.id.titleView);
                 TextView adrView = (TextView) popupView.findViewById(R.id.textView8);
-                TextView phoneView = (TextView) popupView.findViewById(R.id.textView9);
+
                 titleView.setText(info.getResList().get(position).getName());
                 adrView.setText(info.getResList().get(position).getAddress());
-                phoneView.setText(info.getResList().get(position).getPhone());
+
 
                 CheckBox breakfastCheck = (CheckBox) popupView.findViewById(R.id.checkBox);
-                CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
-                CheckBox dinnerCheck = (CheckBox) popupView.findViewById(R.id.checkBox3);
+                CheckBox lunchCheck = (CheckBox) popupView.findViewById(R.id.checkBox3);
+                CheckBox dinnerCheck = (CheckBox) popupView.findViewById(R.id.checkBox2);
                 CheckBox night_snackCheck = (CheckBox) popupView.findViewById(R.id.checkBox4);
                 CheckBox riceCheck = (CheckBox) popupView.findViewById(R.id.checkBox5);
                 CheckBox noodleCheck = (CheckBox) popupView.findViewById(R.id.checkBox6);
@@ -153,7 +156,7 @@ public class ResListFragment extends Fragment {
 
                 breakfastCheck.setChecked(currentRes.getType_breakfast());
                 breakfastCheck.setEnabled(false);
-                lunchCheck.setChecked(currentRes.getType_lucnch());
+                lunchCheck.setChecked(currentRes.getType_lunch());
                 lunchCheck.setEnabled(false);
                 dinnerCheck.setChecked(currentRes.getType_dinner());
                 dinnerCheck.setEnabled(false);

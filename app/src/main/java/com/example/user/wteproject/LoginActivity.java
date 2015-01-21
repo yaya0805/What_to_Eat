@@ -131,8 +131,9 @@ public class LoginActivity extends ActionBarActivity {
             protected void onPostExecute(String result){
                 if(result!=null){
                     Gson gson = new Gson();
-                    Log.d("info",result);
+                    Log.d("info_before",result);
                     info = gson.fromJson(result,Information.class);
+                    Log.d("info_after",gson.toJson(info));
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("info",info);

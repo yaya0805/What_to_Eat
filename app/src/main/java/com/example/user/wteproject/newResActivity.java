@@ -37,7 +37,6 @@ public class newResActivity extends ActionBarActivity {
     private Button addNewResBtn;
     private EditText adrText;
     private EditText nameText;
-    private EditText phoneText;
     private CheckBox breakfastcheck;
     private CheckBox lunchCheck;
     private CheckBox dinnerCheck;
@@ -67,26 +66,26 @@ public class newResActivity extends ActionBarActivity {
         addNewResBtn = (Button) findViewById(R.id.addNewResBtn);
         adrText = (EditText) findViewById(R.id.adrText);
         nameText = (EditText) findViewById(R.id.nameText);
-        phoneText = (EditText) findViewById(R.id.phoneText);
-        breakfastcheck = (CheckBox) findViewById(R.id.breakfastcheck);
-        lunchCheck = (CheckBox) findViewById(R.id.lunchcheck);
-        dinnerCheck = (CheckBox) findViewById(R.id.dinnercheck);
-        night_snackCheck = (CheckBox) findViewById(R.id.night_snackcheck);
+
+        breakfastcheck = (CheckBox) findViewById(R.id.breakfastcheckin_newRes);
+        lunchCheck = (CheckBox) findViewById(R.id.lunchcheckin_newRes);
+        dinnerCheck = (CheckBox) findViewById(R.id.dinnercheckin_newRes);
+        night_snackCheck = (CheckBox) findViewById(R.id.night_snackcheckin_newRes);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        riceCheck = (CheckBox) findViewById(R.id.riceCheck);
-        noodleCheck = (CheckBox) findViewById(R.id.noodleCheck);
-        otherCheck = (CheckBox) findViewById(R.id.otherCheck);
+        riceCheck = (CheckBox) findViewById(R.id.riceCheckin_newRes);
+        noodleCheck = (CheckBox) findViewById(R.id.noodleCheckin_newRes);
+        otherCheck = (CheckBox) findViewById(R.id.otherCheckin_newRes);
 
         addNewResBtn.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v){
                 String name = nameText.getText().toString();
                 String address = adrText.getText().toString();
-                String phone = phoneText.getText().toString();
+
                 final String url = "http://maps.googleapis.com/maps/api/geocode/json?address="+address+"&sensor=false&language=zh-TW";
 
                 // name ,id ,address ,phone
-                Restaurant res = new Restaurant(name,-1,address,phone);
+                Restaurant res = new Restaurant(name,-1,address,null);
 
                 res.setType_breakfast(breakfastcheck.isChecked());
                 res.setType_dinner(dinnerCheck.isChecked());
@@ -169,10 +168,10 @@ public class newResActivity extends ActionBarActivity {
                         res.setLat(geoResult.getResults().get(0).getGeometry().getLocation().getLat());
                         res.setLng(geoResult.getResults().get(0).getGeometry().getLocation().getLng());
                         String jsonString = gson.toJson(res);
-                        Log.d("msg",jsonString);
+                        Log.d("msg_in new Res 172:",jsonString);
                         String result = delegate.doPost(BASE_URL+"/restaurants" , jsonString);
                         Restaurant newRes = gson.fromJson(result,Restaurant.class);
-                        Log.d("result",result);
+                        Log.d("result in Res 175:",result);
                         return newRes;
                     }
                 } catch (URISyntaxException | IOException e) {

@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="早餐"
-        android:id="@+id/breakfastCheck1"
+        android:id="@+id/breakfastCheckin_decision"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -60,18 +60,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="午餐"
-        android:id="@+id/lunchCheck1"
-        android:layout_below="@+id/breakfastCheck1"
-        android:layout_alignRight="@+id/breakfastCheck1"
-        android:layout_alignEnd="@+id/breakfastCheck1"
+        android:id="@+id/lunchCheckin_decision"
+        android:layout_below="@+id/breakfastCheckin_decision"
+        android:layout_alignRight="@+id/breakfastCheckin_decision"
+        android:layout_alignEnd="@+id/breakfastCheckin_decision"
         android:checked="false" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="晚餐"
-        android:id="@+id/dinnerCheck1"
-        android:layout_below="@+id/lunchCheck1"
+        android:id="@+id/dinnerCheckin_decision"
+        android:layout_below="@+id/lunchCheckin_decision"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -80,8 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="消夜"
-        android:id="@+id/night_snackCheck1"
-        android:layout_below="@+id/dinnerCheck1"
+        android:id="@+id/night_snackCheckin_decision"
+        android:layout_below="@+id/dinnerCheckin_decision"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -94,7 +94,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="37dp"
-        android:layout_below="@+id/night_snackCheck1" />
+        android:layout_below="@+id/night_snackCheckin_decision" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -105,24 +105,6 @@
         android:layout_alignParentStart="true"
         android:prompt="@string/arrive_time"
         android:spinnerMode="dropdown" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/longView"
-        android:layout_below="@+id/night_snackCheck1"
-        android:layout_alignLeft="@+id/latView"
-        android:layout_alignStart="@+id/latView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/latView"
-        android:layout_below="@+id/dinnerCheck1"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -143,5 +125,46 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
         android:indeterminate="false" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="餐點類型"
+        android:id="@+id/textView99"
+        android:layout_above="@+id/night_snackCheckin_decision"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/ratingspinner"
+        android:layout_alignStart="@+id/ratingspinner" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="飯食"
+        android:id="@+id/riceCheckin_decision"
+        android:layout_below="@+id/textView99"
+        android:layout_alignLeft="@+id/textView99"
+        android:layout_alignStart="@+id/textView99"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="麵食"
+        android:id="@+id/noodleCheckin_decision"
+        android:layout_below="@+id/riceCheckin_decision"
+        android:layout_alignLeft="@+id/riceCheckin_decision"
+        android:layout_alignStart="@+id/riceCheckin_decision"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="其他"
+        android:id="@+id/otherCheckin_decision"
+        android:layout_below="@+id/noodleCheckin_decision"
+        android:layout_toRightOf="@+id/textView6"
+        android:layout_toEndOf="@+id/textView6"
+        android:checked="false" />
 
 </RelativeLayout>
