@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -41,6 +42,7 @@ import adapter.MyListAdapter;
 import domain.Information;
 import domain.Restaurant;
 import http.HttpDelegate;
+import service.SysApplication;
 
 
 /**
@@ -68,7 +70,8 @@ public class ResListFragment extends Fragment {
     private ListView listView ;
     private ListAdapter listAdapter;
 
-    private PopupWindow popupWindow;
+
+    private static PopupWindow popupWindow;
 
     /**
      * Use this factory method to create a new instance of
@@ -268,5 +271,15 @@ public class ResListFragment extends Fragment {
             }
         }.execute(null,null,null);
     }
+
+    public static boolean dismissPopup(){
+        Log.d("popupwindow:",String.valueOf(popupWindow==null));
+        if(popupWindow==null) return true;
+        else {
+            popupWindow.dismiss();
+            return false;
+        }
+    }
+
 
 }

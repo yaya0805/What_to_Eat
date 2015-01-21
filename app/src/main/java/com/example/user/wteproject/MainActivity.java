@@ -22,6 +22,7 @@ import service.SysApplication;
 
 public class MainActivity extends ActionBarActivity  {
 
+    private Fragment fg;
     FragmentPagerAdapter adapterViewPager;
     public static Information info;
 
@@ -46,7 +47,7 @@ public class MainActivity extends ActionBarActivity  {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-
+                fg = adapterViewPager.getItem(position);
             }
 
             // This method will be invoked when the current page is scrolled
@@ -114,7 +115,7 @@ public class MainActivity extends ActionBarActivity  {
     public boolean onKeyDown(int keyCode,KeyEvent keyEvent){
         if(keyCode == KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(this).setTitle("Where to Eat").setMessage("確定要離開嗎?")
-                    .setCancelable(false).setPositiveButton("No",new DialogInterface.OnClickListener() {
+                    .setCancelable(false).setPositiveButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // do nothing;
@@ -125,7 +126,7 @@ public class MainActivity extends ActionBarActivity  {
                     SysApplication.getInstance().exit();
                 }
             }).show();
-            return true;
+
         }
         return super.onKeyDown(keyCode,keyEvent);
     }
