@@ -6,8 +6,8 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="70dp"
+        android:layout_width="125dp"
+        android:layout_height="55dp"
         android:id="@+id/imageView2"
         android:background="@drawable/word"
         android:layout_alignParentTop="true"
@@ -31,10 +31,10 @@
         android:text="早餐"
         android:id="@+id/breakfastCheckin_decision"
         android:checked="false"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/imageView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -84,10 +84,11 @@
         android:background="@drawable/spin"
         android:popupBackground="@drawable/inside"
         android:prompt="@string/prompt_rating_spinner"
-        android:layout_below="@+id/imageView3"
-        android:layout_toEndOf="@+id/imageView2"
-        android:layout_alignLeft="@+id/imageView6"
-        android:layout_alignStart="@+id/imageView6" />
+        android:layout_above="@+id/imageView5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignStart="@+id/imageView5" />
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -104,10 +105,9 @@
         android:text="飯食"
         android:id="@+id/riceCheckin_decision"
         android:checked="false"
-        android:layout_below="@+id/ratingspinner"
+        android:layout_below="@+id/night_snackCheckin_decision"
         android:layout_alignLeft="@+id/imageView5"
-        android:layout_alignStart="@+id/imageView5"
-        android:layout_marginTop="75dp" />
+        android:layout_alignStart="@+id/imageView5" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -136,15 +136,14 @@
         android:background="@drawable/word_time"
         android:layout_below="@+id/imageView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" />
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="95dp"
         android:layout_height="40dp"
         android:background="@drawable/word_arrive"
         android:id="@+id/imageView4"
-        android:layout_below="@+id/otherCheckin_decision"
+        android:layout_above="@+id/arriveTimeSpinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -153,11 +152,11 @@
         android:layout_height="40dp"
         android:background="@drawable/word_type"
         android:id="@+id/imageView5"
-        android:layout_alignBottom="@+id/dinnerCheckin_decision"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_below="@+id/lunchCheckin_decision"
         android:layout_alignRight="@+id/decideBtn"
-        android:layout_alignEnd="@+id/decideBtn"
-        android:layout_marginRight="17dp"
-        android:layout_marginEnd="17dp" />
+        android:layout_alignEnd="@+id/decideBtn" />
 
     <ImageView
         android:layout_width="95dp"
