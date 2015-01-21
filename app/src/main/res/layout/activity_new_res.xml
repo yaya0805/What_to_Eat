@@ -37,8 +37,7 @@
         android:id="@+id/addNewResBtn"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/night_snackcheckin_newRes"
-        android:layout_toEndOf="@+id/night_snackcheckin_newRes"
-        android:layout_marginBottom="37dp" />
+        android:layout_toEndOf="@+id/night_snackcheckin_newRes" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -46,9 +45,9 @@
         android:text="早餐"
         android:id="@+id/breakfastcheckin_newRes"
         android:checked="false"
-        android:layout_below="@+id/textView10"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/imageView7"
+        android:layout_alignLeft="@+id/lunchcheckin_newRes"
+        android:layout_alignStart="@+id/lunchcheckin_newRes" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -95,8 +94,8 @@
         android:id="@+id/riceCheckin_newRes"
         android:checked="false"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/textView5"
-        android:layout_alignEnd="@+id/textView5" />
+        android:layout_alignLeft="@+id/imageView8"
+        android:layout_alignStart="@+id/imageView8" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -118,22 +117,22 @@
         android:layout_alignLeft="@+id/riceCheckin_newRes"
         android:layout_alignStart="@+id/riceCheckin_newRes" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="餐點類型"
-        android:id="@+id/textView5"
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView7"
+        android:background="@drawable/word_time"
         android:layout_above="@+id/riceCheckin_newRes"
-        android:layout_toRightOf="@+id/progressBar2"
-        android:layout_toEndOf="@+id/progressBar2" />
+        android:layout_alignLeft="@+id/breakfastcheckin_newRes"
+        android:layout_alignStart="@+id/breakfastcheckin_newRes" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="適合用餐時間"
-        android:id="@+id/textView10"
-        android:layout_above="@+id/riceCheckin_newRes"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:background="@drawable/word_type"
+        android:id="@+id/imageView8"
+        android:layout_alignBottom="@+id/imageView7"
+        android:layout_alignRight="@+id/addNewResBtn"
+        android:layout_alignEnd="@+id/addNewResBtn" />
 
 </RelativeLayout>
