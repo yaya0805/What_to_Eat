@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/flower"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/titleView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="23dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:textSize="12dp"
+        android:id="@+id/textView8"
+        android:layout_below="@+id/titleView"
+        android:layout_marginTop="28dp"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="早餐"
+        android:id="@+id/checkBox"
+        android:layout_above="@+id/checkBox2"
+        android:checked="false"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="晚餐"
+        android:id="@+id/checkBox2"
+        android:layout_above="@+id/ratingBar2"
+        android:layout_alignLeft="@+id/checkBox"
+        android:layout_alignStart="@+id/checkBox"
+        android:layout_marginBottom="21dp"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="午餐"
+        android:id="@+id/checkBox3"
+        android:layout_alignTop="@+id/checkBox"
+        android:layout_toRightOf="@+id/checkBox"
+        android:layout_toEndOf="@+id/checkBox"
+        android:layout_marginLeft="37dp"
+        android:layout_marginStart="37dp"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="宵夜"
+        android:id="@+id/checkBox4"
+        android:layout_alignBottom="@+id/checkBox2"
+        android:layout_alignLeft="@+id/checkBox3"
+        android:layout_alignStart="@+id/checkBox3"
+        android:checked="false" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar2"
+        android:layout_marginBottom="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/checkBox2"
+        android:layout_alignStart="@+id/checkBox2" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/checkBox"
+        android:layout_marginBottom="23dp"
+        android:weightSum="1"
+        android:layout_alignLeft="@+id/titleView"
+        android:layout_alignStart="@+id/titleView"
+        android:id="@+id/linearLayout">
+
+        <CheckBox
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:text="飯食"
+            android:id="@+id/checkBox5"
+            android:layout_gravity="bottom"
+            android:checked="false" />
+
+        <CheckBox
+            android:layout_width="73dp"
+            android:layout_height="wrap_content"
+            android:text="麵食"
+            android:id="@+id/checkBox6"
+            android:layout_gravity="bottom"
+            android:checked="false"
+            android:layout_weight="0.07" />
+
+        <CheckBox
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:text="其他"
+            android:id="@+id/checkBox7"
+            android:checked="false"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/rice"
+        android:id="@+id/imageView10"
+        android:layout_alignBottom="@+id/checkBox4"
+        android:layout_toRightOf="@+id/checkBox3"
+        android:layout_toEndOf="@+id/checkBox3"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp" />
+
+</RelativeLayout>
